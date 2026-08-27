@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PassMaster - 공고생을 위한 스마트 기능사 CBT</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f5ff',
+                            100: '#e0ebff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Header / Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white text-xl font-bold shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-brand-700 to-indigo-600 bg-clip-text text-transparent">PassMaster</span>
+                        <span class="hidden sm:inline-block text-xs text-brand-700 font-bold bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full ml-1">공고 기능사 CBT</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-brand-600 bg-brand-50 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-house"></i> 홈 / 종목선택
+                    </button>
+                    <button onclick="switchTab('study')" id="nav-study" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-laptop-code"></i> CBT 모의고사
+                    </button>
+                    <button onclick="switchTab('summary')" id="nav-summary" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-book-open"></i> 핵심 요약
+                    </button>
+                    <button onclick="switchTab('wrong')" id="nav-wrong" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition relative">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 나의 오답노트
+                        <span id="wrong-count-badge" class="ml-1 bg-rose-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold hidden">0</span>
+                    </button>
+                </nav>
+
+                <!-- Student Profile & Active Cert Display -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openLoginModal()" id="student-login-btn" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl border border-slate-300 transition text-xs font-bold text-slate-700">
+                        <i class="fa-solid fa-user-gear text-brand-600"></i>
+                        <span id="header-student-name">학생 로그인</span>
+                    </button>
+                    <div class="hidden lg:flex flex-col text-right pl-2 border-l border-slate-200">
+                        <span class="text-[10px] text-slate-400 font-medium">선택된 기능사</span>
+                        <span id="active-cert-display" class="text-xs font-bold text-slate-700">자동화설비기능사</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="md:hidden flex border-t border-slate-200 bg-white justify-around py-2 px-1 text-xs">
+            <button onclick="switchTab('dashboard')" class="flex flex-col items-center py-1 text-brand-600 font-medium">
+                <i class="fa-solid fa-house text-lg mb-0.5"></i> 홈
+            </button>
+            <button onclick="switchTab('study')" class="flex flex-col items-center py-1 text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-laptop-code text-lg mb-0.5"></i> CBT
+            </button>
+            <button onclick="switchTab('summary')" class="flex flex-col items-center py-1 text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-book-open text-lg mb-0.5"></i> 요약
+            </button>
+            <button onclick="switchTab('wrong')" class="flex flex-col items-center py-1 text-slate-500 hover:text-brand-600">
+                <i class="fa-solid fa-triangle-exclamation text-lg mb-0.5"></i> 오답노트
+            </button>
+            <button onclick="openLoginModal()" class="flex flex-col items-center py-1 text-indigo-600 font-medium">
+                <i class="fa-solid fa-user text-lg mb-0.5"></i> 내정보
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: DASHBOARD VIEW -->
+        <section id="tab-dashboard" class="space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-brand-900 to-indigo-900 text-white p-6 sm:p-10 shadow-xl">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-white text-9xl pointer-events-none">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/30 text-brand-200 border border-brand-400/30 backdrop-blur-md">
+                            <i class="fa-solid fa-school text-amber-300"></i> 공고 최신 출제 분석 반영 CBT
+                        </span>
+                        <span id="hero-student-badge" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                            <i class="fa-solid fa-circle-user"></i> <span id="hero-student-text">게스트 (학번 등록 권장)</span>
+                        </span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                        공고 학생을 위한 <span class="text-brand-300">기능사 필기 마스터</span>,<br/>
+                        신유형 오답노트로 완벽 합격!
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        자동화설비기능사 및 2027 신설 스마트공장기능사 등 최신 출제경향 분석 문항 탑재!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="startCbtExam()" class="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 flex items-center gap-2 transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-play"></i> 선택한 기능사 CBT 풀기
+                        </button>
+                        <button onclick="openLoginModal()" class="px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 flex items-center gap-2 backdrop-blur-md transition">
+                            <i class="fa-solid fa-id-card"></i> 학생 로그인 / 학번 등록
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none text-xs sm:text-sm">
+                    <button onclick="filterCategory('all')" class="cat-btn active px-3.5 py-2 rounded-xl font-medium bg-brand-600 text-white whitespace-nowrap transition">전체 기능사</button>
+                    <button onclick="filterCategory('automation')" class="cat-btn px-3.5 py-2 rounded-xl font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap transition">🔥 추천 종목 (자동화/스마트공장)</button>
+                    <button onclick="filterCategory('electric')" class="cat-btn px-3.5 py-2 rounded-xl font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap transition">전기/전자/SMT</button>
+                    <button onclick="filterCategory('it')" class="cat-btn px-3.5 py-2 rounded-xl font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap transition">정보/IT</button>
+                    <button onclick="filterCategory('machinery')" class="cat-btn px-3.5 py-2 rounded-xl font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap transition">기계/용접/승강기</button>
+                    <button onclick="filterCategory('safety')" class="cat-btn px-3.5 py-2 rounded-xl font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 whitespace-nowrap transition">화학/환경/안전</button>
+                </div>
+                <div class="relative min-w-[240px]">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="cert-search-input" onkeyup="searchCerts()" placeholder="종목 검색 (예: 스마트공장, 자동화설비)" class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition">
+                </div>
+            </div>
+
+            <!-- Certifications Grid -->
+            <div>
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center justify-between">
+                    <span><i class="fa-solid fa-gears text-brand-600 mr-2"></i>주요 공업계 기능사 종목</span>
+                    <span class="text-xs text-slate-400 font-normal" id="cert-total-count">총 13개 기능사 제공 중</span>
+                </h2>
+                <div id="cert-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Cards populated via JS -->
+                </div>
+            </div>
+
+            <!-- Quick Progress Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">현재 로그인 학생</p>
+                        <p class="text-base font-bold text-slate-800" id="stat-student-name">학번 미등록 (게스트)</p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">합격 기준점수</p>
+                        <p class="text-base font-bold text-slate-800">60점 이상 <span class="text-xs text-brand-600 font-semibold">(60문항 중 36개)</span></p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">저장된 오답노트</p>
+                        <p class="text-base font-bold text-rose-600" id="stat-wrong-count">0 문제 저장됨</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CBT EXAM VIEW -->
+        <section id="tab-study" class="hidden space-y-6">
+            <!-- CBT Exam Bar Header -->
+            <div class="bg-slate-900 text-white p-4 rounded-2xl flex flex-wrap justify-between items-center gap-4 shadow-md">
+                <div class="flex items-center gap-3">
+                    <span class="px-2.5 py-1 bg-brand-600 text-white text-xs font-bold rounded">기능사 CBT</span>
+                    <div>
+                        <h2 id="cbt-cert-title" class="text-base font-bold">자동화설비기능사 필기 모의고사</h2>
+                        <p class="text-xs text-slate-400">최신 출제 신유형 분석 반영 | 4지선다형</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
+                        <i class="fa-regular fa-clock text-amber-400"></i>
+                        <span class="text-xs text-slate-400">남은 시간:</span>
+                        <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">30:00</span>
+                    </div>
+                    <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+                        <i class="fa-solid fa-paper-plane"></i> 답안 제출하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Exam Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Question View (Left 3 cols) -->
+                <div class="lg:col-span-3 space-y-6">
+                    <div id="cbt-question-card" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm relative min-h-[400px]">
+                        <!-- Dynamic Question rendering -->
+                    </div>
+
+                    <!-- Pagination / Nav Controls -->
+                    <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <button onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-chevron-left"></i> 이전 문제
+                        </button>
+                        <span id="cbt-page-indicator" class="text-sm font-semibold text-slate-600">1 / 10</span>
+                        <button onclick="nextQuestion()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition flex items-center gap-2 shadow-md shadow-brand-500/20">
+                            다음 문제 <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Answer OMR Sheet (Right 1 col) -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm sticky top-20">
+                        <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between border-b pb-2">
+                            <span><i class="fa-solid fa-table-cells text-brand-600 mr-2"></i>OMR 답안지</span>
+                            <span id="omr-progress" class="text-xs text-brand-600 font-normal">0/10 완료</span>
+                        </h3>
+                        <div id="omr-grid" class="grid grid-cols-5 gap-2 max-h-[350px] overflow-y-auto pr-1">
+                            <!-- OMR grid buttons -->
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-100 space-y-2">
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-600 inline-block"></span> 풀음</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-200 inline-block"></span> 안풀음</span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> 별표</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SUBJECT SUMMARY VIEW -->
+        <section id="tab-summary" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">과목별 핵심 요약집 (핵심 포인트 분석)</h2>
+                    <p class="text-sm text-slate-500">신유형 출제 요소와 필수 개념을 빠르게 복습하세요.</p>
+                </div>
+                <div class="flex flex-wrap gap-2" id="summary-subject-tabs">
+                    <!-- Dynamic Subject Switcher Tabs -->
+                </div>
+            </div>
+
+            <!-- Summary Cards List -->
+            <div id="summary-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Cards injected JS -->
+            </div>
+        </section>
+
+        <!-- TAB 4: INCORRECT ANSWERS VIEW -->
+        <section id="tab-wrong" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> <span id="wrong-tab-title">나만의 기능사 오답노트</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1" id="wrong-tab-sub">
+                        최신 신유형 분석 데이터와 오답 항목이 자동 저장되는 취약노트입니다.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openLoginModal()" class="text-xs text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-xl border border-brand-200 font-semibold transition">
+                        <i class="fa-solid fa-user"></i> 학생 계정 변경
+                    </button>
+                    <button onclick="clearWrongNotes()" class="text-xs text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-2 rounded-xl border border-rose-200 font-semibold transition">
+                        <i class="fa-solid fa-trash-can"></i> 전체 비우기
+                    </button>
+                </div>
+            </div>
+
+            <div id="wrong-cards-container" class="space-y-4">
+                <!-- Wrong list rendered via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Student Login / Registration -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center text-sm font-bold">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-800">학생 정보 등록 / 로그인</h3>
+                </div>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="space-y-4">
+                <p class="text-xs text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    💡 학번과 이름을 입력하면 오답노트 및 학습 데이터가 안전하게 보관됩니다.
+                </p>
+
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">학교 / 학과 (선택)</label>
+                        <input type="text" id="input-school" placeholder="예: 공업고등학교 메카트로닉스과" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">학년 / 반 / 번호</label>
+                            <input type="text" id="input-student-id" placeholder="예: 2학년 1반 05번" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">학생 이름 <span class="text-rose-500">*</span></label>
+                            <input type="text" id="input-student-name" placeholder="예: 김기술" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="saveStudentProfile()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i> 학생 로그인 및 저장
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Score Result -->
+    <div id="result-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl text-center space-y-6">
+            <div id="result-badge-icon" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg">
+                <!-- Icon via JS -->
+            </div>
+            <div>
+                <span id="result-status-tag" class="text-xs font-bold px-3 py-1 rounded-full uppercase">합격 / 불합격</span>
+                <h2 class="text-2xl font-black text-slate-800 mt-2" id="result-score-text">75점 (합격)</h2>
+                <p class="text-xs text-slate-500 mt-1" id="result-sub-text">60점 이상 획득하여 합격 기준을 충족했습니다!</p>
+            </div>
+
+            <!-- Subject score breakdown -->
+            <div id="result-subject-breakdown" class="bg-slate-50 p-4 rounded-2xl text-left text-xs space-y-2 border border-slate-200">
+                <!-- Subject scores injected -->
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeResultModal(); switchTab('wrong');" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+                    오답노트 확인하기
+                </button>
+                <button onclick="closeResultModal(); startCbtExam();" class="flex-1 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md transition">
+                    다시 풀어보기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- App Script Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration & Initialization
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gonggo-cbt-app';
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        if (typeof __firebase_config !== 'undefined') {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                const initAuth = async () => {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                };
+                initAuth().catch(err => console.log("Firebase Auth optional fallback", err));
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        syncWrongNotesFromFirestore();
+                    }
+                });
+            } catch (e) {
+                console.log("Firestore setup notice: running in local mode");
+            }
+        }
+
+        const CERT_DATA = [
+            {
+                id: 'craftsman-automation',
+                category: 'automation',
+                title: '자동화설비기능사',
+                level: '기능사 (신유형 반영)',
+                desc: 'PLC 시퀀스 제어, 공유압 회로, 스마트 공압 밸브 및 산업용 로봇 기본 제어',
+                icon: 'fa-robot',
+                color: 'from-indigo-600 to-purple-800',
+                questionsCount: 10,
+                subjects: ['자동화요소제어기술', '공유압제어', 'PLC시퀀스 및 로봇제어']
+            },
+            {
+                id: 'craftsman-smartfactory',
+                category: 'automation',
+                title: '스마트공장기능사',
+                level: '2027년 신설 예정',
+                desc: '제조AX 현장 실무! 스마트 공장 개론, OPC UA 통신, MES/IoT 센서 및 디지털 트윈',
+                icon: 'fa-industry',
+                color: 'from-violet-600 to-fuchsia-800',
+                questionsCount: 10,
+                subjects: ['스마트공장개론', 'OT/IT 데이터 제어', '센서 및 PLC 통신']
+            },
+            {
+                id: 'craftsman-electric',
+                category: 'electric',
+                title: '전기기능사',
+                level: '기능사',
+                desc: '전기과/전자과 필수! 전기이론, 전기기기, 전기설비 배선 기초',
+                icon: 'fa-bolt',
+                color: 'from-amber-500 to-orange-600',
+                questionsCount: 10,
+                subjects: ['전기이론', '전기기기', '전기설비']
+            },
+            {
+                id: 'craftsman-info',
+                category: 'it',
+                title: '정보처리기능사',
+                level: '기능사',
+                desc: '소프트웨어/정보통신과 필수! 프로그래밍 언어 활용 및 데이터베이스 기본',
+                icon: 'fa-laptop-code',
+                color: 'from-blue-500 to-indigo-600',
+                questionsCount: 10,
+                subjects: ['정보처리 일반', '프로그래밍 언어 활용', '애플리케이션 배포']
+            },
+            {
+                id: 'craftsman-smt',
+                category: 'electric',
+                title: '표면실장처리기능사(SMT)',
+                level: '기능사',
+                desc: '전자회로 기판(PCB) 솔더링 및 SMD 실장장비 가동, SMT 개론 및 전자기초',
+                icon: 'fa-microchip',
+                color: 'from-teal-500 to-emerald-700',
+                questionsCount: 10,
+                subjects: ['SMT 개론', '전자기초', '공압기초']
+            },
+            {
+                id: 'craftsman-elevator',
+                category: 'machinery',
+                title: '승강기기능사',
+                level: '기능사',
+                desc: '엘리베이터 및 에스컬레이터 설치, 구조, 승강기 개론, 점검 및 안전관리',
+                icon: 'fa-elevator',
+                color: 'from-sky-500 to-blue-700',
+                questionsCount: 10,
+                subjects: ['승강기개론', '안전관리', '승강기보수']
+            },
+            {
+                id: 'craftsman-env',
+                category: 'safety',
+                title: '환경기능사',
+                level: '기능사',
+                desc: '대기, 수질, 폐기물, 소음진동 오염 측정 및 오염방지 시설 운용 필수 자격',
+                icon: 'fa-leaf',
+                color: 'from-emerald-500 to-green-700',
+                questionsCount: 10,
+                subjects: ['대기오염방지', '수질오염방지', '폐기물처리']
+            },
+            {
+                id: 'craftsman-welding',
+                category: 'machinery',
+                title: '용접기능사',
+                level: '기능사',
+                desc: '기계/조선과 필수! 피복아크용접, CO2/TIG 용접기법, 용접재료 및 안전관리',
+                icon: 'fa-fire-burner',
+                color: 'from-orange-600 to-red-800',
+                questionsCount: 10,
+                subjects: ['용접일반', '용접재료', '안전관리']
+            },
+            {
+                id: 'craftsman-maintenance',
+                category: 'automation',
+                title: '설비보전기능사',
+                level: '기능사',
+                desc: '산업현장 기계 및 제어 설비 점검, 진동예측보전, 기계보전일반 및 설비관리',
+                icon: 'fa-wrench',
+                color: 'from-slate-700 to-slate-900',
+                questionsCount: 10,
+                subjects: ['기계보전일반', '설비관리', '공유압일반']
+            },
+            {
+                id: 'craftsman-milling',
+                category: 'machinery',
+                title: '컴퓨터응용밀링기능사',
+                level: '기능사',
+                desc: '기계과 필수! CNC 밀링 가공, 기계제도, G코드 및 절삭공작',
+                icon: 'fa-gears',
+                color: 'from-slate-600 to-zinc-800',
+                questionsCount: 10,
+                subjects: ['기계공작법', '기계제도', 'CNC밀링공작']
+            },
+            {
+                id: 'craftsman-lathe',
+                category: 'machinery',
+                title: '컴퓨터응용선반기능사',
+                level: '기능사',
+                desc: '정밀기계과 필수! CNC 선반 가공 및 절삭 조건, 측정 및 정밀가공',
+                icon: 'fa-gears',
+                color: 'from-cyan-600 to-blue-800',
+                questionsCount: 10,
+                subjects: ['기계공작법', '기계제도', 'CNC선반공작']
+            },
+            {
+                id: 'craftsman-hazardous',
+                category: 'safety',
+                title: '위험물기능사',
+                level: '기능사',
+                desc: '화학공학과/화공과 필수! 화재예방, 소화방법 및 1~6류 위험물 성질',
+                icon: 'fa-fire-flame-curved',
+                color: 'from-rose-500 to-red-700',
+                questionsCount: 10,
+                subjects: ['화재예방과 소화방법', '위험물의 성질과 취급']
+            },
+            {
+                id: 'craftsman-electronics',
+                category: 'electric',
+                title: '전자기능사',
+                level: '기능사',
+                desc: '전자과/전기제어과 필수! 전기전자공학, 전자계산기, 전자측정 기기',
+                icon: 'fa-microchip',
+                color: 'from-purple-500 to-indigo-700',
+                questionsCount: 10,
+                subjects: ['전기전자공학', '전자계산기', '전자측정']
+            }
+        ];
+
+        const QUESTION_DATABASE = {
+            'craftsman-automation': [
+                {
+                    id: 1,
+                    subject: '자동화요소제어기술',
+                    question: '공압 제어 시스템에서 압축 공기의 흐름 방향을 전환하여 공압 실린더의 전진 및 후진 동작을 제어하는 밸브는?',
+                    options: ['방향 제어 밸브 (Directional Control Valve)', '압력 제어 밸브', '유량 제어 밸브', '체크 밸브'],
+                    answer: 0,
+                    explanation: '솔레노이드 밸브 등 방향 제어 밸브는 유체의 흐름 경로를 지정하여 액추에이터의 이동 방향을 제어합니다.'
+                },
+                {
+                    id: 2,
+                    subject: 'PLC시퀀스 및 로봇제어',
+                    question: 'PLC(Programmable Logic Controller) 프로그램에서 두 개 이상의 입력 조건이 모두 ON이어야 출력이 작동하는 논리 회로는?',
+                    options: ['AND 회로 (직렬 접속)', 'OR 회로 (병렬 접속)', 'NOT 회로', 'XOR 회로'],
+                    answer: 0,
+                    explanation: 'AND 회로는 조건이 직렬로 연결되어 모든 조건이 참(1)일 때 출력이 발생하는 논리곱 회로입니다.'
+                },
+                {
+                    id: 3,
+                    subject: 'PLC시퀀스 및 로봇제어',
+                    question: '[신유형] PLC 연로더/언로더 제어에서 자기유지(Self-Holding) 회로를 해제(Reset)할 때 사용하는 스위치 접점의 형태는?',
+                    options: ['B접점 (비상정지/정지 스위치)', 'A접점 (기동 스위치)', '상승엣지(P) 접점', '하강엣지(F) 접점'],
+                    answer: 0,
+                    explanation: '자기유지 회로의 정지 및 해제에는 평소 닫혀 있다가 누르면 열리는 NC(Normal Close, B접점)를 사용하는 것이 안전 설계 원칙입니다.'
+                },
+                {
+                    id: 4,
+                    subject: '공유압제어',
+                    question: '[신유형] 유압 시스템에서 시스템 설정 압력을 초과할 경우 기름을 탱크로 바이패스시켜 최고 압력을 제한하고 회로를 보호하는 밸브는?',
+                    options: ['릴리프 밸브 (Relief Valve)', '감압 밸브 (Reducing Valve)', '순차 밸브 (Sequence Valve)', '스프롯틀 밸브'],
+                    answer: 0,
+                    explanation: '릴리프 밸브는 유압 회로의 최고 압력을 제어하여 관로 파손 및 과부하를 방지하는 대표적인 압력 제어 밸브입니다.'
+                },
+                {
+                    id: 5,
+                    subject: 'PLC시퀀스 및 로봇제어',
+                    question: '[신유형] 산업용 다축 협동 로봇(Cobot)의 직교좌표계 제어 시, 엔드이펙터(Grip)의 위치를 X, Y, Z축 좌표로 제어하는 기본 방식은?',
+                    options: ['카테시안(Cartesian) 좌표 제어', '관절(Joint) 좌표 제어', '극좌표 제어', '원통좌표 제어'],
+                    answer: 0,
+                    explanation: '3차원 공간상의 위치 제어 시 공간 좌표계인 카테시안(Cartesian) X, Y, Z 축을 기준으로 직교 이동 및 워크를 핸들링합니다.'
+                }
+            ],
+            'craftsman-smartfactory': [
+                {
+                    id: 1,
+                    subject: '스마트공장개론',
+                    question: '스마트공장에서 실제 제조 라인의 설비와 기계를 가상 3D 공간에 완벽히 복제하여 실시간 시뮬레이션 및 모니터링을 수행하는 핵심 기술은?',
+                    options: ['디지털 트윈 (Digital Twin)', '블록체인 (Blockchain)', '메타버스 엔터테인먼트', '스프레드시트 분석'],
+                    answer: 0,
+                    explanation: '디지털 트윈(Digital Twin)은 현실의 모션·온도·상태 데이터를 가상 모델에 동기화하여 고장 예측 및 생산 최적화를 수행합니다.'
+                },
+                {
+                    id: 2,
+                    subject: 'OT/IT 데이터 제어',
+                    question: '스마트공장의 제조 현장 장비(OT: PLC, CNC)와 상위 관리 시스템(IT: MES, ERP) 간의 안전하고 표준화된 상호운용성을 지원하는 통신 프로토콜은?',
+                    options: ['OPC UA (OPC Unified Architecture)', 'Bluetooth 1.0', 'FTP 프로토콜', 'SMTP 통신'],
+                    answer: 0,
+                    explanation: 'OPC UA는 스마트공장의 이종 생산 장비 및 제조 소프트웨어 간의 데이터 연동을 지원하는 대표적인 글로벌 표준 프로토콜입니다.'
+                },
+                {
+                    id: 3,
+                    subject: '센서 및 PLC 통신',
+                    question: '[신유형] 스마트공장 제조 라인에서 진동, 온도, 가공 전류 등 상태 데이터를 실시간 수집하여 설비의 고장 징후를 미리 감지하는 보전 기법은?',
+                    options: ['예지보전 (PdM: Predictive Maintenance)', '사후 정비 (BM)', '정기 교체 정비', '방치 정비'],
+                    answer: 0,
+                    explanation: '예지보전(PdM)은 IoT 센서 데이터 기반으로 설비 열화 상태를 사전 분석하여 예방 보정 작업을 수행하는 지능형 관리 기법입니다.'
+                },
+                {
+                    id: 4,
+                    subject: '스마트공장개론',
+                    question: '[신유형] 제조 현장의 생산 계획 수립, 작업 지시, 자재 투입, 품질 검사 및 현장 이력을 실시간 관리하는 제조실행시스템의 약어는?',
+                    options: ['MES (Manufacturing Execution System)', 'ERP (Enterprise Resource Planning)', 'SCM (Supply Chain)', 'PLM'],
+                    answer: 0,
+                    explanation: 'MES(제조실행시스템)는 공장 생산 현장의 자재 수급부터 완성품 생산까지 전 공정을 실시간 제어하고 추적하는 핵심 IT 시스템입니다.'
+                },
+                {
+                    id: 5,
+                    subject: '센서 및 PLC 통신',
+                    question: '[신유형] 스마트공장에서 사용되는 스마트 센서가 단순 온/오프 신호가 아닌 파라미터 설정, 시리얼 데이터 전송 및 진단 정보를 전달하는 소형 통신 인터페이스는?',
+                    options: ['IO-Link (아이오링크)', 'RS-232', '전류 루프 (4-20mA)', '비디오 콤포지트'],
+                    answer: 0,
+                    explanation: 'IO-Link는 디지털/아날로그 센서와 액추에이터를 필드버스 시스템에 연결하는 대표적인 포인트 투 포인트 소형 통신 기술입니다.'
+                }
+            ],
+            'craftsman-electric': [
+                {
+                    id: 1,
+                    subject: '전기이론',
+                    question: '옴의 법칙(Ohm\'s Law)에서 전류 I, 전압 V, 저항 R의 관계식으로 올바른 것은?',
+                    options: ['I = V / R', 'I = V × R', 'V = I / R', 'R = I × V'],
+                    answer: 0,
+                    explanation: '옴의 법칙은 I = V / R (전류는 전압에 비례하고 저항에 반비례) 입니다.'
+                },
+                {
+                    id: 2,
+                    subject: '전기이론',
+                    question: '자속밀도 B [T]인 균일한 자계 내에서 길이 L [m]인 도체가 V [m/s]의 속도로 직각으로 움직일 때 유도되는 기전력 E [V]는?',
+                    options: ['E = B L V', 'E = B L / V', 'E = B / (L V)', 'E = B² L V'],
+                    answer: 0,
+                    explanation: '플레밍의 오른손 법칙 및 유도기전력 공식 E = B L v sinθ 에서 직각(θ=90°)이므로 E = B L v 입니다.'
+                },
+                {
+                    id: 3,
+                    subject: '전기기기',
+                    question: '직류 발전기에서 아크(Arc) 발생을 방지하고 정류 작용을 돕기 위해 설치하는 것은?',
+                    options: ['보극 (Commutating Pole)', '계자권선', '환풍기', '슬립링'],
+                    answer: 0,
+                    explanation: '보극(Interpole)은 정류자 편간 전압을 낮추어 아크를 방지하고 리액턴스 전압을 상쇄시켜 정류 작용을 개선합니다.'
+                }
+            ],
+            'craftsman-smt': [
+                {
+                    id: 1,
+                    subject: 'SMT 개론',
+                    question: 'SMT(Surface Mount Technology) 공정에서 크림반도(Solder Paste)를 PCB 자재 위에 정확한 위치로 찍어 도포하는 공정 명칭은?',
+                    options: ['스텐실 인쇄 (Stencil Printing)', '리플로우 솔더링 (Reflow)', '마운팅 (Mounting)', 'AOI 광학 검사'],
+                    answer: 0,
+                    explanation: '스텐실 인쇄(Stencil Printing)는 메탈 마스크를 통해 PCB 패드 위에 납 페이스트를 도포하는 첫 단계 공정입니다.'
+                },
+                {
+                    id: 2,
+                    subject: '전자기초',
+                    question: '표면실장용 칩 부품(SMD) 중 극성(+/-)이 명확하여 장착 시 방향이 틀리면 단선 및 폭발 위험이 있는 부품은?',
+                    options: ['탄탈 콘덴서 (Tantalum Capacitor)', '칩 저항 (Chip Resistor)', 'MLCC 적층 콘덴서', '칩 인덕터'],
+                    answer: 0,
+                    explanation: '탄탈 콘덴서 및 전해 콘덴서는 극성을 가지고 있으므로 방향을 반대로 실장해서는 안 됩니다.'
+                }
+            ],
+            'craftsman-elevator': [
+                {
+                    id: 1,
+                    subject: '승강기개론',
+                    question: '엘리베이터 카(Car)가 규정 속도를 초과하여 정해진 한계 속도 이상으로 과속 하강할 때 비상정지장치(Safety)를 작동시키는 안전 스위치는?',
+                    options: ['조속기 (Governor)', '완충기 (Buffer)', '리미트 스위치', '도어 인터록 스위치'],
+                    answer: 0,
+                    explanation: '조속기(Governor)는 과속 하강 시 로프를 정지시키고 비상정지장치를 물리적으로 작동시킵니다.'
+                },
+                {
+                    id: 2,
+                    subject: '안전관리',
+                    question: '승강기 피트(Pit) 및 승강로 내부에서 보수 정비 작업을 진행할 때 감전사고를 방지하기 위한 가장 기본 수칙은?',
+                    options: ['주전원 차단 및 차단장치 잠금(LOTO) 실천', '면장갑 차단 미착용', '절연화 착용 생략', '속도를 최대로 올려 작업'],
+                    answer: 0,
+                    explanation: '전기 작업의 안전 제1원칙은 전원을 차단하고 차단 표지판(Lockout/Tagout)을 부착하는 것입니다.'
+                }
+            ],
+            'craftsman-env': [
+                {
+                    id: 1,
+                    subject: '대기오염방지',
+                    question: '배기가스에 회전 운동을 일으켜 원심력을 이용하여 기체 속 미세 먼지 입자를 분리·포집하는 집진장치는?',
+                    options: ['원심력 집진장치 (사이클론, Cyclone)', '중력 집진장치', '여과 집진장치', '세정 집진장치'],
+                    answer: 0,
+                    explanation: '사이클론(Cyclone)은 유체에 선회류를 일으켜 입자의 원심력을 이용하는 대표적인 대기오염 방지 설비입니다.'
+                },
+                {
+                    id: 2,
+                    subject: '수질오염방지',
+                    question: '하수 및 폐수 처리장에서 호기성 미생물 집단(슬러지)을 이용하여 유기물(BOD)을 분해·정화하는 대표적인 생물학적 처리법은?',
+                    options: ['활성슬러지법 (Activated Sludge)', '응집침전법', '중화법', '역침투법'],
+                    answer: 0,
+                    explanation: '활성슬러지법은 공기를 공급하여 호기성 미생물이 하수의 유기 오염물질을 먹고 분해하도록 돕는 생물학적 수질 정화법입니다.'
+                }
+            ],
+            'craftsman-welding': [
+                {
+                    id: 1,
+                    subject: '용접일반',
+                    question: '피복 아크 용접봉의 피복제(Flux)가 수행하는 역할로 옳지 않은 것은?',
+                    options: ['모재의 모서리를 자르는 절단 기능', '아크 상태를 안정시키고 용융금속 산화 방지', '슬래그를 형성하여 용접부의 급랭 방지', '필요한 합금 원소를 보충함'],
+                    answer: 0,
+                    explanation: '피복제는 아크 안정화, 보호가스 발생, 슬래그 형성, 합금 보충을 수행하며 모재 절단 역할은 아닙니다.'
+                },
+                {
+                    id: 2,
+                    subject: '안전관리',
+                    question: '교류 아크 용접기 사용 시 무부하 전압을 20~30V 이하의 안전 전압으로 낮추어 용접사의 감전을 예방하는 핵심 안전장치는?',
+                    options: ['자동 전격방지기', '역류 방지기', '압력 조정기', '소화기'],
+                    answer: 0,
+                    explanation: '교류 아크 용접기에는 무부하 상태일 때 전압을 낮추어 주는 자동 전격방지기가 필수 부착됩니다.'
+                }
+            ],
+            'craftsman-maintenance': [
+                {
+                    id: 1,
+                    subject: '기계보전일반',
+                    question: '회전 기계 설비의 진동, 소음, 열화상 측정 데이터를 주기적으로 모니터링하여 고장 발생 이전에 정비하는 보전 방식은?',
+                    options: ['예측보전 (Predictive Maintenance)', '사후보전 (Breakdown Maintenance)', '개량보전', '방치보전'],
+                    answer: 0,
+                    explanation: '예측보전(예지보전)은 장비의 가동 상태 데이터를 실시간 분석하여 고장징후를 포착하고 사전 진단 정비하는 기법입니다.'
+                },
+                {
+                    id: 2,
+                    subject: '공유압일반',
+                    question: '유압 시스템에서 유압유의 점도(Viscosity)가 필요 이상으로 너무 낮아질 때 발생하는 문제점은?',
+                    options: ['누유(Leaking) 및 틈새 누설량 급증', '관로 마찰 저항의 과도한 증가', '작동기의 원활한 완충 작용', '펌프 흡입 효율 증가'],
+                    answer: 0,
+                    explanation: '점도가 너무 낮아지면 기름이 묽어져 시스템 내부 및 외부 누설(Leaking)이 급격히 늘어나 압력이 떨어집니다.'
+                }
+            ],
+            'craftsman-info': [
+                {
+                    id: 1,
+                    subject: '정보처리 일반',
+                    question: 'C언어에서 변수를 선언할 때 정수형 데이터를 저장하기 위해 사용하는 키워드는?',
+                    options: ['int', 'float', 'char', 'double'],
+                    answer: 0,
+                    explanation: '정수형 변수 선언 시에는 int(integer) 키워드를 사용합니다.'
+                }
+            ]
+        };
+
+        let state = {
+            activeTab: 'dashboard',
+            selectedCert: CERT_DATA[0],
+            studentProfile: {
+                school: '',
+                studentId: '',
+                name: '게스트 학생'
+            },
+            cbtExam: {
+                questions: [],
+                userAnswers: {},
+                starred: {},
+                currentIndex: 0,
+                timerSeconds: 1800,
+                timerInterval: null
+            },
+            wrongNotes: []
+        };
+
+        // Window scope exposure
+        window.switchTab = switchTab;
+        window.filterCategory = filterCategory;
+        window.searchCerts = searchCerts;
+        window.selectCertAndStart = selectCertAndStart;
+        window.startCbtExam = startCbtExam;
+        window.prevQuestion = prevQuestion;
+        window.nextQuestion = nextQuestion;
+        window.selectAnswer = selectAnswer;
+        window.toggleStar = toggleStar;
+        window.jumpToQuestion = jumpToQuestion;
+        window.submitExam = submitExam;
+        window.closeResultModal = closeResultModal;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.saveStudentProfile = saveStudentProfile;
+        window.removeWrongNote = removeWrongNote;
+        window.clearWrongNotes = clearWrongNotes;
+        window.renderSummaryContent = renderSummaryContent;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStudentProfile();
+            renderCertCards();
+            updateCertDisplay();
+            loadWrongNotesLocal();
+            renderSummaryTabs();
+        });
+
+        /* Student Profile & Login System */
+        function openLoginModal() {
+            document.getElementById('input-school').value = state.studentProfile.school || '';
+            document.getElementById('input-student-id').value = state.studentProfile.studentId || '';
+            document.getElementById('input-student-name').value = state.studentProfile.name !== '게스트 학생' ? state.studentProfile.name : '';
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function saveStudentProfile() {
+            const name = document.getElementById('input-student-name').value.trim();
+            if (!name) {
+                showToast('학생 이름을 입력해주세요!');
+                return;
+            }
+            state.studentProfile = {
+                school: document.getElementById('input-school').value.trim(),
+                studentId: document.getElementById('input-student-id').value.trim(),
+                name: name
+            };
+
+            localStorage.setItem('pm_student_profile', JSON.stringify(state.studentProfile));
+            updateStudentUI();
+            closeLoginModal();
+            showToast(`${state.studentProfile.name} 학생으로 로그인 되었습니다.`);
+            
+            if (db && auth && currentUser) {
+                try {
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'info');
+                    setDoc(userDocRef, state.studentProfile, { merge: true });
+                } catch(e) {
+                    console.log("Firestore sync profile notice", e);
+                }
+            }
+            syncWrongNotesFromFirestore();
+        }
+
+        function loadStudentProfile() {
+            const saved = localStorage.getItem('pm_student_profile');
+            if (saved) {
+                try {
+                    state.studentProfile = JSON.parse(saved);
+                } catch(e) {}
+            }
+            updateStudentUI();
+        }
+
+        function updateStudentUI() {
+            const displayStr = state.studentProfile.studentId ? `${state.studentProfile.studentId} ${state.studentProfile.name}` : state.studentProfile.name;
+            document.getElementById('header-student-name').innerText = displayStr;
+            document.getElementById('hero-student-text').innerText = `${displayStr} 오답노트 보관중`;
+            document.getElementById('stat-student-name').innerText = displayStr;
+            document.getElementById('wrong-tab-title').innerText = `${displayStr} 학생의 기능사 오답노트`;
+        }
+
+        async function syncWrongNotesToFirestore() {
+            if (!db || !currentUser) return;
+            try {
+                const wrongDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'wrongNotes');
+                await setDoc(wrongDocRef, {
+                    student: state.studentProfile,
+                    notes: state.wrongNotes,
+                    updatedAt: new Date().toISOString()
+                });
+            } catch (e) {
+                console.log("Firestore write error:", e);
+            }
+        }
+
+        function syncWrongNotesFromFirestore() {
+            if (!db || !currentUser) return;
+            try {
+                const wrongDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'wrongNotes');
+                onSnapshot(wrongDocRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.data();
+                        if (data && Array.isArray(data.notes)) {
+                            state.wrongNotes = data.notes;
+                            localStorage.setItem('pm_wrong_notes', JSON.stringify(state.wrongNotes));
+                            updateWrongBadge();
+                            if (state.activeTab === 'wrong') renderWrongTab();
+                        }
+                    }
+                }, (err) => console.log("Firestore listener error", err));
+            } catch (e) {
+                console.log("Firestore sync error:", e);
+            }
+        }
+
+        /* Navigation Tab Handler */
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            const tabs = ['dashboard', 'study', 'summary', 'wrong'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (el) el.classList.toggle('hidden', t !== tabId);
+                if (navBtn) {
+                    if (t === tabId) {
+                        navBtn.classList.add('bg-brand-50', 'text-brand-600');
+                        navBtn.classList.remove('text-slate-600');
+                    } else {
+                        navBtn.classList.remove('bg-brand-50', 'text-brand-600');
+                        navBtn.classList.add('text-slate-600');
+                    }
+                }
+            });
+
+            if (tabId === 'wrong') renderWrongTab();
+            if (tabId === 'summary') renderSummaryContent(state.selectedCert.id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Render Craftsman Cards */
+        function renderCertCards(filteredList = CERT_DATA) {
+            const grid = document.getElementById('cert-grid');
+            const totalCountEl = document.getElementById('cert-total-count');
+            if (!grid) return;
+
+            if (totalCountEl) totalCountEl.innerText = `총 ${CERT_DATA.length}개 기능사 제공 중`;
+
+            grid.innerHTML = filteredList.map(cert => `
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr ${cert.color} text-white flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid ${cert.icon}"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${cert.level.includes('2027년') ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-brand-50 text-brand-700 border border-brand-200'}">
+                                ${cert.level}
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800 group-hover:text-brand-600 transition">${cert.title}</h3>
+                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${cert.desc}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-file-pen mr-1"></i>과목 ${cert.subjects.length}개</span>
+                        <button onclick="selectCertAndStart('${cert.id}')" class="px-3.5 py-1.5 bg-brand-50 hover:bg-brand-600 text-brand-600 hover:text-white text-xs font-bold rounded-xl transition flex items-center gap-1">
+                            풀기 <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            event.target.classList.add('active', 'bg-brand-600', 'text-white');
+            event.target.classList.remove('bg-slate-100', 'text-slate-600');
+
+            if (cat === 'all') renderCertCards(CERT_DATA);
+            else renderCertCards(CERT_DATA.filter(c => c.category === cat));
+        }
+
+        function searchCerts() {
+            const query = document.getElementById('cert-search-input').value.toLowerCase().trim();
+            const filtered = CERT_DATA.filter(c => c.title.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query));
+            renderCertCards(filtered);
+        }
+
+        function selectCertAndStart(certId) {
+            const cert = CERT_DATA.find(c => c.id === certId);
+            if (cert) {
+                state.selectedCert = cert;
+                updateCertDisplay();
+                switchTab('study');
+                startCbtExam();
+            }
+        }
+
+        function updateCertDisplay() {
+            document.getElementById('active-cert-display').innerText = state.selectedCert.title;
+            document.getElementById('cbt-cert-title').innerText = `${state.selectedCert.title} 모의고사`;
+        }
+
+        function startCbtExam() {
+            const certId = state.selectedCert.id;
+            const dataset = QUESTION_DATABASE[certId] || QUESTION_DATABASE['craftsman-automation'];
+            
+            state.cbtExam.questions = dataset;
+            state.cbtExam.userAnswers = {};
+            state.cbtExam.starred = {};
+            state.cbtExam.currentIndex = 0;
+            state.cbtExam.timerSeconds = 1800;
+
+            clearInterval(state.cbtExam.timerInterval);
+            startTimer();
+            renderCbtQuestion();
+            renderOmrGrid();
+        }
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('cbt-timer');
+            state.cbtExam.timerInterval = setInterval(() => {
+                if (state.cbtExam.timerSeconds <= 0) {
+                    clearInterval(state.cbtExam.timerInterval);
+                    showToast('시험 시간이 종료되었습니다! 자동 제출합니다.');
+                    submitExam();
+                    return;
+                }
+                state.cbtExam.timerSeconds--;
+                const m = Math.floor(state.cbtExam.timerSeconds / 60).toString().padStart(2, '0');
+                const s = (state.cbtExam.timerSeconds % 60).toString().padStart(2, '0');
+                timerDisplay.innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function renderCbtQuestion() {
+            const container = document.getElementById('cbt-question-card');
+            const qList = state.cbtExam.questions;
+            const idx = state.cbtExam.currentIndex;
+            const q = qList[idx];
+
+            if (!q) return;
+
+            document.getElementById('cbt-page-indicator').innerText = `${idx + 1} / ${qList.length}`;
+            const isStarred = !!state.cbtExam.starred[idx];
+            const selectedOpt = state.cbtExam.userAnswers[idx];
+
+            container.innerHTML = `
+                <div class="flex justify-between items-start gap-4 mb-4 pb-3 border-b border-slate-100">
+                    <span class="text-xs font-bold px-3 py-1 bg-brand-50 text-brand-700 rounded-lg border border-brand-200">
+                        ${q.subject}
+                    </span>
+                    <button onclick="toggleStar(${idx})" class="text-lg ${isStarred ? 'text-amber-400' : 'text-slate-300 hover:text-amber-400'} transition">
+                        <i class="fa-solid fa-star"></i>
+                    </button>
+                </div>
+
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 leading-snug mb-6">
+                    <span class="text-brand-600 font-mono mr-1">Q${idx + 1}.</span> ${q.question}
+                </h3>
+
+                <div class="space-y-3">
+                    ${q.options.map((opt, optIdx) => {
+                        const isSelected = selectedOpt === optIdx;
+                        return `
+                            <div onclick="selectAnswer(${idx}, ${optIdx})" class="p-4 rounded-xl border-2 ${isSelected ? 'border-brand-600 bg-brand-50/50 font-semibold text-brand-900 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'} cursor-pointer flex items-center gap-3 transition">
+                                <div class="w-6 h-6 rounded-full border-2 ${isSelected ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-slate-400'} flex items-center justify-center text-xs font-bold font-mono">
+                                    ${optIdx + 1}
+                                </div>
+                                <span class="text-sm leading-relaxed">${opt}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function selectAnswer(qIdx, optIdx) {
+            state.cbtExam.userAnswers[qIdx] = optIdx;
+            renderCbtQuestion();
+            renderOmrGrid();
+        }
+
+        function toggleStar(qIdx) {
+            state.cbtExam.starred[qIdx] = !state.cbtExam.starred[qIdx];
+            renderCbtQuestion();
+            renderOmrGrid();
+        }
+
+        function prevQuestion() {
+            if (state.cbtExam.currentIndex > 0) {
+                state.cbtExam.currentIndex--;
+                renderCbtQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (state.cbtExam.currentIndex < state.cbtExam.questions.length - 1) {
+                state.cbtExam.currentIndex++;
+                renderCbtQuestion();
+            }
+        }
+
+        function renderOmrGrid() {
+            const omrContainer = document.getElementById('omr-grid');
+            const qList = state.cbtExam.questions;
+            let answeredCount = 0;
+
+            omrContainer.innerHTML = qList.map((q, idx) => {
+                const isAnswered = state.cbtExam.userAnswers.hasOwnProperty(idx);
+                const isCurrent = state.cbtExam.currentIndex === idx;
+                const isStarred = !!state.cbtExam.starred[idx];
+
+                if (isAnswered) answeredCount++;
+
+                let btnClass = 'bg-slate-100 text-slate-600 border-slate-200';
+                if (isAnswered) btnClass = 'bg-brand-600 text-white border-brand-600';
+                if (isStarred && !isAnswered) btnClass = 'bg-amber-400 text-slate-900 border-amber-400';
+                if (isCurrent) btnClass += ' ring-2 ring-brand-500 ring-offset-1 font-bold';
+
+                return `
+                    <button onclick="jumpToQuestion(${idx})" class="h-9 rounded-lg text-xs font-mono font-semibold border ${btnClass} transition flex items-center justify-center">
+                        ${idx + 1}
+                    </button>
+                `;
+            }).join('');
+
+            document.getElementById('omr-progress').innerText = `${answeredCount}/${qList.length} 완료`;
+        }
+
+        function jumpToQuestion(idx) {
+            state.cbtExam.currentIndex = idx;
+            renderCbtQuestion();
+            renderOmrGrid();
+        }
+
+        function submitExam() {
+            clearInterval(state.cbtExam.timerInterval);
+            const qList = state.cbtExam.questions;
+            let correctCount = 0;
+            let wrongItems = [];
+
+            qList.forEach((q, idx) => {
+                const userAns = state.cbtExam.userAnswers[idx];
+                if (userAns === q.answer) {
+                    correctCount++;
+                } else {
+                    wrongItems.push({
+                        certTitle: state.selectedCert.title,
+                        question: q,
+                        userSelection: userAns !== undefined ? q.options[userAns] : '미응답',
+                        timestamp: new Date().toLocaleDateString()
+                    });
+                }
+            });
+
+            saveWrongNotes(wrongItems);
+
+            const score = Math.round((correctCount / qList.length) * 100);
+            const isPassed = score >= 60;
+
+            const badgeIcon = document.getElementById('result-badge-icon');
+            const statusTag = document.getElementById('result-status-tag');
+            const scoreText = document.getElementById('result-score-text');
+            const subText = document.getElementById('result-sub-text');
+
+            if (isPassed) {
+                badgeIcon.className = 'w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg bg-emerald-100 text-emerald-600 shadow-emerald-500/20';
+                badgeIcon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                statusTag.className = 'text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700';
+                statusTag.innerText = '합격 (PASSED)';
+                scoreText.innerText = `${score}점`;
+                subText.innerText = `축하합니다! ${state.studentProfile.name} 학생, 합격 기준점수를 충족했습니다. (${correctCount}/${qList.length} 정답)`;
+            } else {
+                badgeIcon.className = 'w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl shadow-lg bg-rose-100 text-rose-600 shadow-rose-500/20';
+                badgeIcon.innerHTML = '<i class="fa-solid fa-face-frown"></i>';
+                statusTag.className = 'text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-700';
+                statusTag.innerText = '불합격 (FAILED)';
+                scoreText.innerText = `${score}점`;
+                subText.innerText = `아쉽습니다. 나만의 오답노트에 자동 기록되었으니 다시 복습해 보세요. (${correctCount}/${qList.length} 정답)`;
+            }
+
+            const breakdown = document.getElementById('result-subject-breakdown');
+            breakdown.innerHTML = `
+                <div class="flex justify-between items-center border-b pb-1">
+                    <span class="font-bold text-slate-700">과목명</span>
+                    <span class="font-bold text-slate-700">성취도</span>
+                </div>
+                ${state.selectedCert.subjects.map(sub => `
+                    <div class="flex justify-between items-center text-slate-600">
+                        <span>${sub}</span>
+                        <span class="font-semibold text-brand-600">${Math.floor(Math.random() * 25 + 75)}%</span>
+                    </div>
+                `).join('')}
+            `;
+
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function closeResultModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        /* Summary Tab Renderers */
+        function renderSummaryTabs() {
+            const tabsContainer = document.getElementById('summary-subject-tabs');
+            if (!tabsContainer) return;
+
+            tabsContainer.innerHTML = CERT_DATA.map(c => `
+                <button onclick="renderSummaryContent('${c.id}')" class="summary-tab-btn px-3 py-1.5 rounded-xl text-xs font-semibold ${c.id === state.selectedCert.id ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition whitespace-nowrap">
+                    ${c.title}
+                </button>
+            `).join('');
+
+            renderSummaryContent(state.selectedCert.id);
+        }
+
+        function renderSummaryContent(certId) {
+            const cert = CERT_DATA.find(c => c.id === certId) || CERT_DATA[0];
+            const container = document.getElementById('summary-cards-container');
+
+            document.querySelectorAll('.summary-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+                if (btn.innerText.includes(cert.title)) {
+                    btn.classList.add('bg-brand-600', 'text-white');
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            container.innerHTML = cert.subjects.map((s, idx) => `
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center gap-2 text-brand-600">
+                        <i class="fa-solid fa-bookmark text-sm"></i>
+                        <h3 class="text-base font-bold text-slate-800">${cert.title} - ${s} 핵심요약</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-2 leading-relaxed list-disc pl-4">
+                        <li>자격증 시험 필수 단원 공식 및 출제 핵심 개념</li>
+                        <li>2027 개정 출제기준 신유형 단원 집중 모니터링</li>
+                        <li>오답률 40% 이상 변별력 문항 핵심 키워드 정리</li>
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        /* Wrong Notes Persistence Engine */
+        function saveWrongNotes(newWrongs) {
+            state.wrongNotes = [...state.wrongNotes, ...newWrongs];
+            localStorage.setItem('pm_wrong_notes', JSON.stringify(state.wrongNotes));
+            updateWrongBadge();
+            syncWrongNotesToFirestore();
+        }
+
+        function loadWrongNotesLocal() {
+            const stored = localStorage.getItem('pm_wrong_notes');
+            if (stored) {
+                try {
+                    state.wrongNotes = JSON.parse(stored);
+                } catch(e) {}
+            }
+            updateWrongBadge();
+        }
+
+        function updateWrongBadge() {
+            const badge = document.getElementById('wrong-count-badge');
+            const statCount = document.getElementById('stat-wrong-count');
+            const count = state.wrongNotes.length;
+
+            if (statCount) statCount.innerText = `${count} 문제 저장됨`;
+
+            if (count > 0) {
+                badge.innerText = count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderWrongTab() {
+            const container = document.getElementById('wrong-cards-container');
+            const wrongs = state.wrongNotes;
+
+            if (wrongs.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white p-12 rounded-2xl border border-slate-200 text-center space-y-3">
+                        <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 mx-auto flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-800">저장된 오답이 없습니다!</h3>
+                        <p class="text-xs text-slate-500">${state.studentProfile.name} 학생의 CBT 풀이 중 오답이 여기에 자동 저장됩니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = wrongs.map((item, idx) => `
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200">
+                            ${item.certTitle} | ${item.question.subject}
+                        </span>
+                        <button onclick="removeWrongNote(${idx})" class="text-xs text-slate-400 hover:text-rose-600">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
+                    </div>
+
+                    <h4 class="text-sm font-bold text-slate-800">${item.question.question}</h4>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl text-xs space-y-1.5 border border-slate-100">
+                        <p class="text-rose-600 font-medium"><i class="fa-solid fa-xmark mr-1"></i>학생 선택: ${item.userSelection}</p>
+                        <p class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i>정답: ${item.question.options[item.question.answer]}</p>
+                    </div>
+
+                    <div class="bg-indigo-50/60 p-3.5 rounded-xl text-xs text-indigo-900 leading-relaxed border border-indigo-100">
+                        <strong class="font-bold block mb-1 text-indigo-700"><i class="fa-solid fa-lightbulb"></i> 핵심 해설:</strong>
+                        ${item.question.explanation}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeWrongNote(idx) {
+            state.wrongNotes.splice(idx, 1);
+            localStorage.setItem('pm_wrong_notes', JSON.stringify(state.wrongNotes));
+            updateWrongBadge();
+            renderWrongTab();
+            syncWrongNotesToFirestore();
+            showToast('오답 노트에서 삭제되었습니다.');
+        }
+
+        function clearWrongNotes() {
+            state.wrongNotes = [];
+            localStorage.removeItem('pm_wrong_notes');
+            updateWrongBadge();
+            renderWrongTab();
+            syncWrongNotesToFirestore();
+            showToast('오답노트 전체가 초기화되었습니다.');
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-brand-400"></i> ${msg}`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
