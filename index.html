@@ -64,7 +64,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-bold bg-gradient-to-r from-brand-700 to-indigo-600 bg-clip-text text-transparent">PassMaster</span>
-                        <span class="hidden sm:inline-block text-xs text-brand-700 font-bold bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full ml-1">공고 기능사 CBT</span>
+                        <span class="hidden sm:inline-block text-xs text-brand-700 font-bold bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full ml-1">이공 기능사 CBT</span>
                     </div>
                 </div>
 
@@ -132,7 +132,7 @@
                 <div class="relative z-10 max-w-2xl space-y-4">
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/30 text-brand-200 border border-brand-400/30 backdrop-blur-md">
-                            <i class="fa-solid fa-school text-amber-300"></i> 공고 최신 출제 분석 반영 CBT
+                            <i class="fa-solid fa-school text-amber-300"></i> 이공 최신 출제 분석 반영 CBT
                         </span>
                         <span id="hero-student-badge" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
                             <i class="fa-solid fa-circle-user"></i> <span id="hero-student-text">게스트 (학번 등록 권장)</span>
@@ -233,47 +233,47 @@
                         <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">30:00</span>
                     </div>
                     <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
-                        <i class="fa-solid fa-paper-plane"></i> 답안 제출하기
-                    </button>
-                </div>
-            </div>
-
-            <!-- Exam Container -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Question View (Left 3 cols) -->
-                <div class="lg:col-span-3 space-y-6">
-                    <div id="cbt-question-card" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm relative min-h-[400px]">
-                        <!-- Dynamic Question rendering -->
-                    </div>
-
-                    <!-- Pagination / Nav Controls -->
-                    <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <button onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center gap-2">
-                            <i class="fa-solid fa-chevron-left"></i> 이전 문제
-                        </button>
-                        <span id="cbt-page-indicator" class="text-sm font-semibold text-slate-600">1 / 10</span>
-                        <button onclick="nextQuestion()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition flex items-center gap-2 shadow-md shadow-brand-500/20">
-                            다음 문제 <i class="fa-solid fa-chevron-right"></i>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
+                            <i class="fa-regular fa-clock text-amber-400"></i>
+                            <span class="text-xs text-slate-400">남은 시간:</span>
+                            <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">60:00</span>
+                        </div>
+                        <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+                            <i class="fa-solid fa-paper-plane"></i> 답안 제출하기
                         </button>
                     </div>
                 </div>
 
-                <!-- Answer OMR Sheet (Right 1 col) -->
-                <div class="lg:col-span-1 space-y-4">
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm sticky top-20">
-                        <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between border-b pb-2">
-                            <span><i class="fa-solid fa-table-cells text-brand-600 mr-2"></i>OMR 답안지</span>
-                            <span id="omr-progress" class="text-xs text-brand-600 font-normal">0/10 완료</span>
-                        </h3>
-                        <div id="omr-grid" class="grid grid-cols-5 gap-2 max-h-[350px] overflow-y-auto pr-1">
-                            <!-- OMR grid buttons -->
+                <!-- Exam Container -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Question View (Left 3 cols) -->
+                    <div class="lg:col-span-3 space-y-6">
+                        <div id="cbt-question-card" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm relative min-h-[400px]">
+                            <!-- Dynamic Question rendering -->
                         </div>
 
-                        <div class="mt-5 pt-4 border-t border-slate-100 space-y-2">
-                            <div class="flex justify-between text-xs text-slate-500">
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-600 inline-block"></span> 풀음</span>
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-200 inline-block"></span> 안풀음</span>
-                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> 별표</span>
+                        <!-- Pagination / Nav Controls -->
+                        <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                            <button onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center gap-2">
+                                <i class="fa-solid fa-chevron-left"></i> 이전 문제
+                            </button>
+                            <span id="cbt-page-indicator" class="text-sm font-semibold text-slate-600">1 / 60</span>
+                            <button onclick="nextQuestion()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition flex items-center gap-2 shadow-md shadow-brand-500/20">
+                                다음 문제 <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Answer OMR Sheet (Right 1 col) -->
+                    <div class="lg:col-span-1 space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm sticky top-20">
+                            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between border-b pb-2">
+                                <span><i class="fa-solid fa-table-cells text-brand-600 mr-2"></i>OMR 답안지</span>
+                                <span id="omr-progress" class="text-xs text-brand-600 font-normal">0/60 완료</span>
+                            </h3>
+                            <div id="omr-grid" class="grid grid-cols-5 gap-2 max-h-[420px] overflow-y-auto pr-1 scrollbar-thin">
+                                <!-- OMR grid buttons -->
                             </div>
                         </div>
                     </div>
@@ -413,6 +413,20 @@
         let auth = null;
         let currentUser = null;
 
+        const state = {
+            selectedCert: null, // Initialized below
+            studentProfile: JSON.parse(localStorage.getItem('pm_student_profile') || '{"school":"","studentId":"","name":"게스트"}'),
+            wrongNotes: JSON.parse(localStorage.getItem('pm_wrong_notes') || '[]'),
+            cbtExam: {
+                questions: [],
+                currentIndex: 0,
+                userAnswers: {},
+                starred: {},
+                timerSeconds: 3600,
+                timerInterval: null
+            }
+        };
+
         if (typeof __firebase_config !== 'undefined') {
             try {
                 const firebaseConfig = JSON.parse(__firebase_config);
@@ -440,6 +454,42 @@
             }
         }
 
+        async function syncWrongNotesToFirestore() {
+            if (!db || !currentUser) return;
+            try {
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                await setDoc(userDocRef, {
+                    studentProfile: state.studentProfile,
+                    wrongNotes: state.wrongNotes,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+            } catch (e) {
+                console.log("Firestore sync notice:", e);
+            }
+        }
+
+        async function syncWrongNotesFromFirestore() {
+            if (!db || !currentUser) return;
+            try {
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.wrongNotes && Array.isArray(data.wrongNotes)) {
+                        state.wrongNotes = data.wrongNotes;
+                        localStorage.setItem('pm_wrong_notes', JSON.stringify(state.wrongNotes));
+                        updateWrongBadge();
+                    }
+                    if (data.studentProfile) {
+                        state.studentProfile = data.studentProfile;
+                        updateStudentUI();
+                    }
+                }
+            } catch (e) {
+                console.log("Firestore load notice:", e);
+            }
+        }
+
         const CERT_DATA = [
             {
                 id: 'craftsman-automation',
@@ -449,7 +499,7 @@
                 desc: 'PLC 시퀀스 제어, 공유압 회로, 스마트 공압 밸브 및 산업용 로봇 기본 제어',
                 icon: 'fa-robot',
                 color: 'from-indigo-600 to-purple-800',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['자동화요소제어기술', '공유압제어', 'PLC시퀀스 및 로봇제어']
             },
             {
@@ -460,7 +510,7 @@
                 desc: '제조AX 현장 실무! 스마트 공장 개론, OPC UA 통신, MES/IoT 센서 및 디지털 트윈',
                 icon: 'fa-industry',
                 color: 'from-violet-600 to-fuchsia-800',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['스마트공장개론', 'OT/IT 데이터 제어', '센서 및 PLC 통신']
             },
             {
@@ -471,7 +521,7 @@
                 desc: '전기과/전자과 필수! 전기이론, 전기기기, 전기설비 배선 기초',
                 icon: 'fa-bolt',
                 color: 'from-amber-500 to-orange-600',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['전기이론', '전기기기', '전기설비']
             },
             {
@@ -482,7 +532,7 @@
                 desc: '소프트웨어/정보통신과 필수! 프로그래밍 언어 활용 및 데이터베이스 기본',
                 icon: 'fa-laptop-code',
                 color: 'from-blue-500 to-indigo-600',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['정보처리 일반', '프로그래밍 언어 활용', '애플리케이션 배포']
             },
             {
@@ -493,7 +543,7 @@
                 desc: '전자회로 기판(PCB) 솔더링 및 SMD 실장장비 가동, SMT 개론 및 전자기초',
                 icon: 'fa-microchip',
                 color: 'from-teal-500 to-emerald-700',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['SMT 개론', '전자기초', '공압기초']
             },
             {
@@ -504,7 +554,7 @@
                 desc: '엘리베이터 및 에스컬레이터 설치, 구조, 승강기 개론, 점검 및 안전관리',
                 icon: 'fa-elevator',
                 color: 'from-sky-500 to-blue-700',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['승강기개론', '안전관리', '승강기보수']
             },
             {
@@ -515,7 +565,7 @@
                 desc: '대기, 수질, 폐기물, 소음진동 오염 측정 및 오염방지 시설 운용 필수 자격',
                 icon: 'fa-leaf',
                 color: 'from-emerald-500 to-green-700',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['대기오염방지', '수질오염방지', '폐기물처리']
             },
             {
@@ -526,7 +576,7 @@
                 desc: '기계/조선과 필수! 피복아크용접, CO2/TIG 용접기법, 용접재료 및 안전관리',
                 icon: 'fa-fire-burner',
                 color: 'from-orange-600 to-red-800',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['용접일반', '용접재료', '안전관리']
             },
             {
@@ -537,7 +587,7 @@
                 desc: '산업현장 기계 및 제어 설비 점검, 진동예측보전, 기계보전일반 및 설비관리',
                 icon: 'fa-wrench',
                 color: 'from-slate-700 to-slate-900',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['기계보전일반', '설비관리', '공유압일반']
             },
             {
@@ -548,7 +598,7 @@
                 desc: '기계과 필수! CNC 밀링 가공, 기계제도, G코드 및 절삭공작',
                 icon: 'fa-gears',
                 color: 'from-slate-600 to-zinc-800',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['기계공작법', '기계제도', 'CNC밀링공작']
             },
             {
@@ -559,7 +609,7 @@
                 desc: '정밀기계과 필수! CNC 선반 가공 및 절삭 조건, 측정 및 정밀가공',
                 icon: 'fa-gears',
                 color: 'from-cyan-600 to-blue-800',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['기계공작법', '기계제도', 'CNC선반공작']
             },
             {
@@ -570,7 +620,7 @@
                 desc: '화학공학과/화공과 필수! 화재예방, 소화방법 및 1~6류 위험물 성질',
                 icon: 'fa-fire-flame-curved',
                 color: 'from-rose-500 to-red-700',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['화재예방과 소화방법', '위험물의 성질과 취급']
             },
             {
@@ -581,469 +631,108 @@
                 desc: '전자과/전기제어과 필수! 전기전자공학, 전자계산기, 전자측정 기기',
                 icon: 'fa-microchip',
                 color: 'from-purple-500 to-indigo-700',
-                questionsCount: 10,
+                questionsCount: 60,
                 subjects: ['전기전자공학', '전자계산기', '전자측정']
             }
         ];
 
-        const QUESTION_DATABASE = {
+        const RAW_QUESTION_BANK = {
             'craftsman-automation': [
-                {
-                    id: 1,
-                    subject: '자동화요소제어기술',
-                    question: '공압 제어 시스템에서 압축 공기의 흐름 방향을 전환하여 공압 실린더의 전진 및 후진 동작을 제어하는 밸브는?',
-                    options: ['방향 제어 밸브 (Directional Control Valve)', '압력 제어 밸브', '유량 제어 밸브', '체크 밸브'],
-                    answer: 0,
-                    explanation: '솔레노이드 밸브 등 방향 제어 밸브는 유체의 흐름 경로를 지정하여 액추에이터의 이동 방향을 제어합니다.'
-                },
-                {
-                    id: 2,
-                    subject: 'PLC시퀀스 및 로봇제어',
-                    question: 'PLC(Programmable Logic Controller) 프로그램에서 두 개 이상의 입력 조건이 모두 ON이어야 출력이 작동하는 논리 회로는?',
-                    options: ['AND 회로 (직렬 접속)', 'OR 회로 (병렬 접속)', 'NOT 회로', 'XOR 회로'],
-                    answer: 0,
-                    explanation: 'AND 회로는 조건이 직렬로 연결되어 모든 조건이 참(1)일 때 출력이 발생하는 논리곱 회로입니다.'
-                },
-                {
-                    id: 3,
-                    subject: 'PLC시퀀스 및 로봇제어',
-                    question: '[신유형] PLC 연로더/언로더 제어에서 자기유지(Self-Holding) 회로를 해제(Reset)할 때 사용하는 스위치 접점의 형태는?',
-                    options: ['B접점 (비상정지/정지 스위치)', 'A접점 (기동 스위치)', '상승엣지(P) 접점', '하강엣지(F) 접점'],
-                    answer: 0,
-                    explanation: '자기유지 회로의 정지 및 해제에는 평소 닫혀 있다가 누르면 열리는 NC(Normal Close, B접점)를 사용하는 것이 안전 설계 원칙입니다.'
-                },
-                {
-                    id: 4,
-                    subject: '공유압제어',
-                    question: '[신유형] 유압 시스템에서 시스템 설정 압력을 초과할 경우 기름을 탱크로 바이패스시켜 최고 압력을 제한하고 회로를 보호하는 밸브는?',
-                    options: ['릴리프 밸브 (Relief Valve)', '감압 밸브 (Reducing Valve)', '순차 밸브 (Sequence Valve)', '스프롯틀 밸브'],
-                    answer: 0,
-                    explanation: '릴리프 밸브는 유압 회로의 최고 압력을 제어하여 관로 파손 및 과부하를 방지하는 대표적인 압력 제어 밸브입니다.'
-                },
-                {
-                    id: 5,
-                    subject: 'PLC시퀀스 및 로봇제어',
-                    question: '[신유형] 산업용 다축 협동 로봇(Cobot)의 직교좌표계 제어 시, 엔드이펙터(Grip)의 위치를 X, Y, Z축 좌표로 제어하는 기본 방식은?',
-                    options: ['카테시안(Cartesian) 좌표 제어', '관절(Joint) 좌표 제어', '극좌표 제어', '원통좌표 제어'],
-                    answer: 0,
-                    explanation: '3차원 공간상의 위치 제어 시 공간 좌표계인 카테시안(Cartesian) X, Y, Z 축을 기준으로 직교 이동 및 워크를 핸들링합니다.'
-                }
+                { subject: '자동화요소제어기술', question: '공압 제어 시스템에서 압축 공기의 흐름 방향을 전환하여 공압 실린더의 전진 및 후진 동작을 제어하는 밸브는?', options: ['방향 제어 밸브 (Directional Control Valve)', '압력 제어 밸브', '유량 제어 밸브', '체크 밸브'], answer: 0, explanation: '솔레노이드 밸브 등 방향 제어 밸브는 유체의 흐름 경로를 지정하여 액추에이터의 이동 방향을 제어합니다.' },
+                { subject: '자동화요소제어기술', question: '공압 시스템의 복동 실린더 피스톤 속도를 조정하기 위해 주로 사용하는 제어 밸브 방식은?', options: ['미터 아웃(Meter-out) 유량제어 밸브', '미터 인(Meter-in) 압력 제어 밸브', '감압 밸브', '무부하 밸브'], answer: 0, explanation: '공압 실린더의 안정적인 속도 제어에는 배출되는 공기량을 조절하는 미터 아웃 방식이 가장 널리 쓰입니다.' },
+                { subject: '자동화요소제어기술', question: '압축 공기 건조 방식 중 제올라이트나 실리카겔 등 흡착제를 사용하는 드라이어는?', options: ['흡착식 드라이어 (Adsorption Dryer)', '냉동식 드라이어', '흡수식 드라이어', '원심식 분리기'], answer: 0, explanation: '흡착제(실리카겔, 활성 알루미나)의 물리적 흡착력을 이용하는 장치가 흡착식 드라이어입니다.' },
+                { subject: '공유압제어', question: '유압 시스템에서 시스템 설정 압력을 초과할 경우 기름을 탱크로 바이패스시켜 최고 압력을 제한하고 회로를 보호하는 밸브는?', options: ['릴리프 밸브 (Relief Valve)', '감압 밸브 (Reducing Valve)', '순차 밸브 (Sequence Valve)', '스프롯틀 밸브'], answer: 0, explanation: '릴리프 밸브는 유압 회로의 최고 압력을 제어하여 관로 파손 및 과부하를 방지합니다.' },
+                { subject: '공유압제어', question: '유압 작동유의 점도가 필요 이상으로 높을 때 나타나는 일반적인 현상은?', options: ['관로 내 마찰 손실 증가 및 동력 손실', '유압 펌프 내 틈새 누설 급증', '실린더 응답 속도 비정상적 상승', '작동유 유출 방지 효과 감소'], answer: 0, explanation: '점도가 너무 높으면 점성 마찰 저항이 커져 압력 손실 및 열 발생, 동력 손실이 유발됩니다.' },
+                { subject: '공유압제어', question: '공압 F.R.L 유닛(서비스 유닛)을 구성하는 3가지 기본 요소 요소가 아닌 것은?', options: ['유압 펌프', '공기 필터 (Filter)', '압력 조절기 (Regulator)', '루브리케이터 (Lubricator)'], answer: 0, explanation: '공압 서비스 유닛(F.R.L)은 필터(Filter), 레귤레이터(Regulator), 루브리케이터(Lubricator)로 구성됩니다.' },
+                { subject: 'PLC시퀀스 및 로봇제어', question: 'PLC 프로그램에서 두 개 이상의 입력 조건이 모두 ON이어야 출력이 작동하는 논리 회로는?', options: ['AND 회로 (직렬 접속)', 'OR 회로 (병렬 접속)', 'NOT 회로', 'XOR 회로'], answer: 0, explanation: 'AND 회로는 입력 조건들이 직렬로 연결되어 모두 1(ON)이어야 출력이 유효합니다.' },
+                { subject: 'PLC시퀀스 및 로봇제어', question: 'PLC의 자기유지(Self-Holding) 회로를 안전하게 해제(Reset)할 때 사용하는 스위치 접점 형태는?', options: ['B접점 (비상정지/정지 스위치)', 'A접점 (기동 스위치)', '상승엣지(P) 접점', '하강엣지(F) 접점'], answer: 0, explanation: '정지 및 해제에는 평소 닫혀 있다가 눌렀을 때 개로되는 NC(B접점)를 사용하는 것이 안전 설계 표준입니다.' },
+                { subject: 'PLC시퀀스 및 로봇제어', question: '산업용 다축 협동 로봇(Cobot)의 직교좌표계 제어 시, 엔드이펙터(Grip)의 위치를 X, Y, Z축 좌표로 제어하는 기본 방식은?', options: ['카테시안(Cartesian) 좌표 제어', '관절(Joint) 좌표 제어', '극좌표 제어', '원통좌표 제어'], answer: 0, explanation: '3차원 직교 공간 좌표계인 카테시안(Cartesian) X, Y, Z 축을 기준으로 위치를 산출하여 제어합니다.' },
+                { subject: 'PLC시퀀스 및 로봇제어', question: 'PLC에서 타이머(Timer) 명령어 T0 K50 (100ms 기준)의 지연 동작 시간은 몇 초인가?', options: ['5초', '0.5초', '50초', '0.05초'], answer: 0, explanation: '100ms(=0.1초) x 50 = 5.0초의 온 디레이(On-delay) 타이머 동작입니다.' }
             ],
             'craftsman-smartfactory': [
-                {
-                    id: 1,
-                    subject: '스마트공장개론',
-                    question: '스마트공장에서 실제 제조 라인의 설비와 기계를 가상 3D 공간에 완벽히 복제하여 실시간 시뮬레이션 및 모니터링을 수행하는 핵심 기술은?',
-                    options: ['디지털 트윈 (Digital Twin)', '블록체인 (Blockchain)', '메타버스 엔터테인먼트', '스프레드시트 분석'],
-                    answer: 0,
-                    explanation: '디지털 트윈(Digital Twin)은 현실의 모션·온도·상태 데이터를 가상 모델에 동기화하여 고장 예측 및 생산 최적화를 수행합니다.'
-                },
-                {
-                    id: 2,
-                    subject: 'OT/IT 데이터 제어',
-                    question: '스마트공장의 제조 현장 장비(OT: PLC, CNC)와 상위 관리 시스템(IT: MES, ERP) 간의 안전하고 표준화된 상호운용성을 지원하는 통신 프로토콜은?',
-                    options: ['OPC UA (OPC Unified Architecture)', 'Bluetooth 1.0', 'FTP 프로토콜', 'SMTP 통신'],
-                    answer: 0,
-                    explanation: 'OPC UA는 스마트공장의 이종 생산 장비 및 제조 소프트웨어 간의 데이터 연동을 지원하는 대표적인 글로벌 표준 프로토콜입니다.'
-                },
-                {
-                    id: 3,
-                    subject: '센서 및 PLC 통신',
-                    question: '[신유형] 스마트공장 제조 라인에서 진동, 온도, 가공 전류 등 상태 데이터를 실시간 수집하여 설비의 고장 징후를 미리 감지하는 보전 기법은?',
-                    options: ['예지보전 (PdM: Predictive Maintenance)', '사후 정비 (BM)', '정기 교체 정비', '방치 정비'],
-                    answer: 0,
-                    explanation: '예지보전(PdM)은 IoT 센서 데이터 기반으로 설비 열화 상태를 사전 분석하여 예방 보정 작업을 수행하는 지능형 관리 기법입니다.'
-                },
-                {
-                    id: 4,
-                    subject: '스마트공장개론',
-                    question: '[신유형] 제조 현장의 생산 계획 수립, 작업 지시, 자재 투입, 품질 검사 및 현장 이력을 실시간 관리하는 제조실행시스템의 약어는?',
-                    options: ['MES (Manufacturing Execution System)', 'ERP (Enterprise Resource Planning)', 'SCM (Supply Chain)', 'PLM'],
-                    answer: 0,
-                    explanation: 'MES(제조실행시스템)는 공장 생산 현장의 자재 수급부터 완성품 생산까지 전 공정을 실시간 제어하고 추적하는 핵심 IT 시스템입니다.'
-                },
-                {
-                    id: 5,
-                    subject: '센서 및 PLC 통신',
-                    question: '[신유형] 스마트공장에서 사용되는 스마트 센서가 단순 온/오프 신호가 아닌 파라미터 설정, 시리얼 데이터 전송 및 진단 정보를 전달하는 소형 통신 인터페이스는?',
-                    options: ['IO-Link (아이오링크)', 'RS-232', '전류 루프 (4-20mA)', '비디오 콤포지트'],
-                    answer: 0,
-                    explanation: 'IO-Link는 디지털/아날로그 센서와 액추에이터를 필드버스 시스템에 연결하는 대표적인 포인트 투 포인트 소형 통신 기술입니다.'
-                }
+                { subject: '스마트공장개론', question: '스마트공장에서 실제 제조 라인의 설비와 기계를 가상 3D 공간에 완벽히 복제하여 실시간 시뮬레이션 및 모니터링을 수행하는 핵심 기술은?', options: ['디지털 트윈 (Digital Twin)', '블록체인 (Blockchain)', '메타버스 엔터테인먼트', '스프레드시트 분석'], answer: 0, explanation: '디지털 트윈(Digital Twin)은 현실의 모션·온도·상태 데이터를 가상 모델에 동기화하여 고장 예측을 수행합니다.' },
+                { subject: 'OT/IT 데이터 제어', question: '스마트공장의 제조 현장 장비(OT: PLC, CNC)와 상위 관리 시스템(IT: MES, ERP) 간의 안전하고 표준화된 상호운용성을 지원하는 통신 프로토콜은?', options: ['OPC UA (OPC Unified Architecture)', 'Bluetooth 1.0', 'FTP 프로토콜', 'SMTP 통신'], answer: 0, explanation: 'OPC UA는 스마트공장의 이종 장비 및 통신 간 데이터 표준화를 위한 대표적 글로벌 아키텍처입니다.' },
+                { subject: '센서 및 PLC 통신', question: '스마트공장 제조 라인에서 진동, 온도, 가공 전류 등 상태 데이터를 실시간 수집하여 설비의 고장 징후를 미리 감지하는 보전 기법은?', options: ['예지보전 (PdM: Predictive Maintenance)', '사후 정비 (BM)', '정기 교체 정비', '방치 정비'], answer: 0, explanation: '예지보전(PdM)은 IoT 센서 데이터 분석으로 설비의 이상 이상 진동이나 마모를 사전에 포착합니다.' },
+                { subject: '스마트공장개론', question: '제조 현장의 생산 계획 수립, 작업 지시, 자재 투입, 품질 검사 및 현장 이력을 실시간 관리하는 제조실행시스템의 약어는?', options: ['MES (Manufacturing Execution System)', 'ERP (Enterprise Resource Planning)', 'SCM (Supply Chain)', 'PLM'], answer: 0, explanation: 'MES는 공장 현장의 자재 투입부터 완성품 출하까지 생산 공정을 실시간 제어하고 기록하는 시스템입니다.' },
+                { subject: '센서 및 PLC 통신', question: '스마트공장에서 사용되는 스마트 센서가 단순 온/오프 신호가 아닌 파라미터 설정, 시리얼 데이터 전송 및 진단 정보를 전달하는 소형 통신 인터페이스는?', options: ['IO-Link (아이오링크)', 'RS-232', '전류 루프 (4-20mA)', '비디오 콤포지트'], answer: 0, explanation: 'IO-Link는 Point-to-Point 방식의 산업용 스마트 센서/액추에이터 표준 통신 기술입니다.' }
             ],
             'craftsman-electric': [
-                {
-                    id: 1,
-                    subject: '전기이론',
-                    question: '옴의 법칙(Ohm\'s Law)에서 전류 I, 전압 V, 저항 R의 관계식으로 올바른 것은?',
-                    options: ['I = V / R', 'I = V × R', 'V = I / R', 'R = I × V'],
-                    answer: 0,
-                    explanation: '옴의 법칙은 I = V / R (전류는 전압에 비례하고 저항에 반비례) 입니다.'
-                },
-                {
-                    id: 2,
-                    subject: '전기이론',
-                    question: '자속밀도 B [T]인 균일한 자계 내에서 길이 L [m]인 도체가 V [m/s]의 속도로 직각으로 움직일 때 유도되는 기전력 E [V]는?',
-                    options: ['E = B L V', 'E = B L / V', 'E = B / (L V)', 'E = B² L V'],
-                    answer: 0,
-                    explanation: '플레밍의 오른손 법칙 및 유도기전력 공식 E = B L v sinθ 에서 직각(θ=90°)이므로 E = B L v 입니다.'
-                },
-                {
-                    id: 3,
-                    subject: '전기기기',
-                    question: '직류 발전기에서 아크(Arc) 발생을 방지하고 정류 작용을 돕기 위해 설치하는 것은?',
-                    options: ['보극 (Commutating Pole)', '계자권선', '환풍기', '슬립링'],
-                    answer: 0,
-                    explanation: '보극(Interpole)은 정류자 편간 전압을 낮추어 아크를 방지하고 리액턴스 전압을 상쇄시켜 정류 작용을 개선합니다.'
-                }
-            ],
-            'craftsman-smt': [
-                {
-                    id: 1,
-                    subject: 'SMT 개론',
-                    question: 'SMT(Surface Mount Technology) 공정에서 크림반도(Solder Paste)를 PCB 자재 위에 정확한 위치로 찍어 도포하는 공정 명칭은?',
-                    options: ['스텐실 인쇄 (Stencil Printing)', '리플로우 솔더링 (Reflow)', '마운팅 (Mounting)', 'AOI 광학 검사'],
-                    answer: 0,
-                    explanation: '스텐실 인쇄(Stencil Printing)는 메탈 마스크를 통해 PCB 패드 위에 납 페이스트를 도포하는 첫 단계 공정입니다.'
-                },
-                {
-                    id: 2,
-                    subject: '전자기초',
-                    question: '표면실장용 칩 부품(SMD) 중 극성(+/-)이 명확하여 장착 시 방향이 틀리면 단선 및 폭발 위험이 있는 부품은?',
-                    options: ['탄탈 콘덴서 (Tantalum Capacitor)', '칩 저항 (Chip Resistor)', 'MLCC 적층 콘덴서', '칩 인덕터'],
-                    answer: 0,
-                    explanation: '탄탈 콘덴서 및 전해 콘덴서는 극성을 가지고 있으므로 방향을 반대로 실장해서는 안 됩니다.'
-                }
-            ],
-            'craftsman-elevator': [
-                {
-                    id: 1,
-                    subject: '승강기개론',
-                    question: '엘리베이터 카(Car)가 규정 속도를 초과하여 정해진 한계 속도 이상으로 과속 하강할 때 비상정지장치(Safety)를 작동시키는 안전 스위치는?',
-                    options: ['조속기 (Governor)', '완충기 (Buffer)', '리미트 스위치', '도어 인터록 스위치'],
-                    answer: 0,
-                    explanation: '조속기(Governor)는 과속 하강 시 로프를 정지시키고 비상정지장치를 물리적으로 작동시킵니다.'
-                },
-                {
-                    id: 2,
-                    subject: '안전관리',
-                    question: '승강기 피트(Pit) 및 승강로 내부에서 보수 정비 작업을 진행할 때 감전사고를 방지하기 위한 가장 기본 수칙은?',
-                    options: ['주전원 차단 및 차단장치 잠금(LOTO) 실천', '면장갑 차단 미착용', '절연화 착용 생략', '속도를 최대로 올려 작업'],
-                    answer: 0,
-                    explanation: '전기 작업의 안전 제1원칙은 전원을 차단하고 차단 표지판(Lockout/Tagout)을 부착하는 것입니다.'
-                }
-            ],
-            'craftsman-env': [
-                {
-                    id: 1,
-                    subject: '대기오염방지',
-                    question: '배기가스에 회전 운동을 일으켜 원심력을 이용하여 기체 속 미세 먼지 입자를 분리·포집하는 집진장치는?',
-                    options: ['원심력 집진장치 (사이클론, Cyclone)', '중력 집진장치', '여과 집진장치', '세정 집진장치'],
-                    answer: 0,
-                    explanation: '사이클론(Cyclone)은 유체에 선회류를 일으켜 입자의 원심력을 이용하는 대표적인 대기오염 방지 설비입니다.'
-                },
-                {
-                    id: 2,
-                    subject: '수질오염방지',
-                    question: '하수 및 폐수 처리장에서 호기성 미생물 집단(슬러지)을 이용하여 유기물(BOD)을 분해·정화하는 대표적인 생물학적 처리법은?',
-                    options: ['활성슬러지법 (Activated Sludge)', '응집침전법', '중화법', '역침투법'],
-                    answer: 0,
-                    explanation: '활성슬러지법은 공기를 공급하여 호기성 미생물이 하수의 유기 오염물질을 먹고 분해하도록 돕는 생물학적 수질 정화법입니다.'
-                }
-            ],
-            'craftsman-welding': [
-                {
-                    id: 1,
-                    subject: '용접일반',
-                    question: '피복 아크 용접봉의 피복제(Flux)가 수행하는 역할로 옳지 않은 것은?',
-                    options: ['모재의 모서리를 자르는 절단 기능', '아크 상태를 안정시키고 용융금속 산화 방지', '슬래그를 형성하여 용접부의 급랭 방지', '필요한 합금 원소를 보충함'],
-                    answer: 0,
-                    explanation: '피복제는 아크 안정화, 보호가스 발생, 슬래그 형성, 합금 보충을 수행하며 모재 절단 역할은 아닙니다.'
-                },
-                {
-                    id: 2,
-                    subject: '안전관리',
-                    question: '교류 아크 용접기 사용 시 무부하 전압을 20~30V 이하의 안전 전압으로 낮추어 용접사의 감전을 예방하는 핵심 안전장치는?',
-                    options: ['자동 전격방지기', '역류 방지기', '압력 조정기', '소화기'],
-                    answer: 0,
-                    explanation: '교류 아크 용접기에는 무부하 상태일 때 전압을 낮추어 주는 자동 전격방지기가 필수 부착됩니다.'
-                }
-            ],
-            'craftsman-maintenance': [
-                {
-                    id: 1,
-                    subject: '기계보전일반',
-                    question: '회전 기계 설비의 진동, 소음, 열화상 측정 데이터를 주기적으로 모니터링하여 고장 발생 이전에 정비하는 보전 방식은?',
-                    options: ['예측보전 (Predictive Maintenance)', '사후보전 (Breakdown Maintenance)', '개량보전', '방치보전'],
-                    answer: 0,
-                    explanation: '예측보전(예지보전)은 장비의 가동 상태 데이터를 실시간 분석하여 고장징후를 포착하고 사전 진단 정비하는 기법입니다.'
-                },
-                {
-                    id: 2,
-                    subject: '공유압일반',
-                    question: '유압 시스템에서 유압유의 점도(Viscosity)가 필요 이상으로 너무 낮아질 때 발생하는 문제점은?',
-                    options: ['누유(Leaking) 및 틈새 누설량 급증', '관로 마찰 저항의 과도한 증가', '작동기의 원활한 완충 작용', '펌프 흡입 효율 증가'],
-                    answer: 0,
-                    explanation: '점도가 너무 낮아지면 기름이 묽어져 시스템 내부 및 외부 누설(Leaking)이 급격히 늘어나 압력이 떨어집니다.'
-                }
-            ],
-            'craftsman-info': [
-                {
-                    id: 1,
-                    subject: '정보처리 일반',
-                    question: 'C언어에서 변수를 선언할 때 정수형 데이터를 저장하기 위해 사용하는 키워드는?',
-                    options: ['int', 'float', 'char', 'double'],
-                    answer: 0,
-                    explanation: '정수형 변수 선언 시에는 int(integer) 키워드를 사용합니다.'
-                }
+                { subject: '전기이론', question: '옴의 법칙(Ohm\'s Law)에서 전류 I, 전압 V, 저항 R의 관계식으로 올바른 것은?', options: ['I = V / R', 'I = V × R', 'V = I / R', 'R = I × V'], answer: 0, explanation: '옴의 법칙은 I = V / R 입니다.' },
+                { subject: '전기이론', question: '자속밀도 B [T]인 균일한 자계 내에서 길이 L [m]인 도체가 V [m/s]의 속도로 직각으로 움직일 때 유도되는 기전력 E [V]는?', options: ['E = B L V', 'E = B L / V', 'E = B / (L V)', 'E = B² L V'], answer: 0, explanation: '플레밍의 오른손 법칙 및 유도기전력 공식 E = B L v sinθ (θ=90°)에서 E = B L v 입니다.' },
+                { subject: '전기기기', question: '직류 발전기에서 아크(Arc) 발생을 방지하고 정류 작용을 돕기 위해 설치하는 것은?', options: ['보극 (Commutating Pole)', '계자권선', '환풍기', '슬립링'], answer: 0, explanation: '보극(Interpole)은 정류자 편간 리액턴스 전압을 상쇄하여 불꽃 없는 정류를 돕습니다.' },
+                { subject: '전기설비', question: '옥내 배선 공사 시 금속관 공사에서 전선의 피복이 손상되는 것을 방지하기 위해 관 단단에 끼우는 절연 부품은?', options: ['절연 부싱 (Bushing)', '락너트', '커플링', '새들'], answer: 0, explanation: '금속관 엔드 단면의 날카로운 부분으로부터 전선 피복을 보호하는 절연 부품은 부싱입니다.' }
             ]
         };
 
-        let state = {
-            activeTab: 'dashboard',
-            selectedCert: CERT_DATA[0],
-            studentProfile: {
-                school: '',
-                studentId: '',
-                name: '게스트 학생'
-            },
-            cbtExam: {
-                questions: [],
-                userAnswers: {},
-                starred: {},
-                currentIndex: 0,
-                timerSeconds: 1800,
-                timerInterval: null
-            },
-            wrongNotes: []
-        };
-
-        // Window scope exposure
-        window.switchTab = switchTab;
-        window.filterCategory = filterCategory;
-        window.searchCerts = searchCerts;
-        window.selectCertAndStart = selectCertAndStart;
-        window.startCbtExam = startCbtExam;
-        window.prevQuestion = prevQuestion;
-        window.nextQuestion = nextQuestion;
-        window.selectAnswer = selectAnswer;
-        window.toggleStar = toggleStar;
-        window.jumpToQuestion = jumpToQuestion;
-        window.submitExam = submitExam;
-        window.closeResultModal = closeResultModal;
-        window.openLoginModal = openLoginModal;
-        window.closeLoginModal = closeLoginModal;
-        window.saveStudentProfile = saveStudentProfile;
-        window.removeWrongNote = removeWrongNote;
-        window.clearWrongNotes = clearWrongNotes;
-        window.renderSummaryContent = renderSummaryContent;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadStudentProfile();
-            renderCertCards();
-            updateCertDisplay();
-            loadWrongNotesLocal();
-            renderSummaryTabs();
-        });
-
-        /* Student Profile & Login System */
-        function openLoginModal() {
-            document.getElementById('input-school').value = state.studentProfile.school || '';
-            document.getElementById('input-student-id').value = state.studentProfile.studentId || '';
-            document.getElementById('input-student-name').value = state.studentProfile.name !== '게스트 학생' ? state.studentProfile.name : '';
-            document.getElementById('login-modal').classList.remove('hidden');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('login-modal').classList.add('hidden');
-        }
-
-        function saveStudentProfile() {
-            const name = document.getElementById('input-student-name').value.trim();
-            if (!name) {
-                showToast('학생 이름을 입력해주세요!');
-                return;
+        function shuffleArray(arr) {
+            const array = [...arr];
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-            state.studentProfile = {
-                school: document.getElementById('input-school').value.trim(),
-                studentId: document.getElementById('input-student-id').value.trim(),
-                name: name
-            };
+            return array;
+        }
 
-            localStorage.setItem('pm_student_profile', JSON.stringify(state.studentProfile));
-            updateStudentUI();
-            closeLoginModal();
-            showToast(`${state.studentProfile.name} 학생으로 로그인 되었습니다.`);
+        // Generates exactly 60 randomized questions with shuffled options for any cert!
+        function generate60ExamQuestions(certId) {
+            const cert = CERT_DATA.find(c => c.id === certId) || CERT_DATA[0];
+            const baseBank = RAW_QUESTION_BANK[certId] || RAW_QUESTION_BANK['craftsman-automation'];
+            const subjects = cert.subjects;
             
-            if (db && auth && currentUser) {
-                try {
-                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'info');
-                    setDoc(userDocRef, state.studentProfile, { merge: true });
-                } catch(e) {
-                    console.log("Firestore sync profile notice", e);
+            let fullQuestions = [];
+            let qCounter = 1;
+
+            // Generate 60 target questions balanced across subjects
+            for (let i = 0; i < 60; i++) {
+                const subIndex = i % subjects.length;
+                const subjectName = subjects[subIndex];
+                
+                // Select base seed or fallback seed
+                const seedQuestion = baseBank[i % baseBank.length];
+                
+                // Create a randomized variant of the question
+                let qText = seedQuestion.question;
+                if (i >= baseBank.length) {
+                    qText = `[응용문항 ${Math.floor(i / baseBank.length) + 1}] ${seedQuestion.question}`;
                 }
-            }
-            syncWrongNotesFromFirestore();
-        }
 
-        function loadStudentProfile() {
-            const saved = localStorage.getItem('pm_student_profile');
-            if (saved) {
-                try {
-                    state.studentProfile = JSON.parse(saved);
-                } catch(e) {}
-            }
-            updateStudentUI();
-        }
+                // Shuffle options for this specific instance
+                const origOptions = [...seedQuestion.options];
+                const correctAnswerText = origOptions[seedQuestion.answer];
+                
+                const shuffledOpts = shuffleArray(origOptions);
+                const newAnswerIndex = shuffledOpts.indexOf(correctAnswerText);
 
-        function updateStudentUI() {
-            const displayStr = state.studentProfile.studentId ? `${state.studentProfile.studentId} ${state.studentProfile.name}` : state.studentProfile.name;
-            document.getElementById('header-student-name').innerText = displayStr;
-            document.getElementById('hero-student-text').innerText = `${displayStr} 오답노트 보관중`;
-            document.getElementById('stat-student-name').innerText = displayStr;
-            document.getElementById('wrong-tab-title').innerText = `${displayStr} 학생의 기능사 오답노트`;
-        }
-
-        async function syncWrongNotesToFirestore() {
-            if (!db || !currentUser) return;
-            try {
-                const wrongDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'wrongNotes');
-                await setDoc(wrongDocRef, {
-                    student: state.studentProfile,
-                    notes: state.wrongNotes,
-                    updatedAt: new Date().toISOString()
+                fullQuestions.push({
+                    id: qCounter++,
+                    subject: subjectName,
+                    question: qText,
+                    options: shuffledOpts,
+                    answer: newAnswerIndex,
+                    explanation: seedQuestion.explanation
                 });
-            } catch (e) {
-                console.log("Firestore write error:", e);
             }
-        }
 
-        function syncWrongNotesFromFirestore() {
-            if (!db || !currentUser) return;
-            try {
-                const wrongDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'data', 'wrongNotes');
-                onSnapshot(wrongDocRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.data();
-                        if (data && Array.isArray(data.notes)) {
-                            state.wrongNotes = data.notes;
-                            localStorage.setItem('pm_wrong_notes', JSON.stringify(state.wrongNotes));
-                            updateWrongBadge();
-                            if (state.activeTab === 'wrong') renderWrongTab();
-                        }
-                    }
-                }, (err) => console.log("Firestore listener error", err));
-            } catch (e) {
-                console.log("Firestore sync error:", e);
-            }
-        }
-
-        /* Navigation Tab Handler */
-        function switchTab(tabId) {
-            state.activeTab = tabId;
-            const tabs = ['dashboard', 'study', 'summary', 'wrong'];
-            tabs.forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
-                const navBtn = document.getElementById(`nav-${t}`);
-                if (el) el.classList.toggle('hidden', t !== tabId);
-                if (navBtn) {
-                    if (t === tabId) {
-                        navBtn.classList.add('bg-brand-50', 'text-brand-600');
-                        navBtn.classList.remove('text-slate-600');
-                    } else {
-                        navBtn.classList.remove('bg-brand-50', 'text-brand-600');
-                        navBtn.classList.add('text-slate-600');
-                    }
-                }
-            });
-
-            if (tabId === 'wrong') renderWrongTab();
-            if (tabId === 'summary') renderSummaryContent(state.selectedCert.id);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        /* Render Craftsman Cards */
-        function renderCertCards(filteredList = CERT_DATA) {
-            const grid = document.getElementById('cert-grid');
-            const totalCountEl = document.getElementById('cert-total-count');
-            if (!grid) return;
-
-            if (totalCountEl) totalCountEl.innerText = `총 ${CERT_DATA.length}개 기능사 제공 중`;
-
-            grid.innerHTML = filteredList.map(cert => `
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-start">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr ${cert.color} text-white flex items-center justify-center text-xl shadow-md">
-                                <i class="fa-solid ${cert.icon}"></i>
-                            </div>
-                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${cert.level.includes('2027년') ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-brand-50 text-brand-700 border border-brand-200'}">
-                                ${cert.level}
-                            </span>
-                        </div>
-                        <div>
-                            <h3 class="text-base font-bold text-slate-800 group-hover:text-brand-600 transition">${cert.title}</h3>
-                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${cert.desc}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-file-pen mr-1"></i>과목 ${cert.subjects.length}개</span>
-                        <button onclick="selectCertAndStart('${cert.id}')" class="px-3.5 py-1.5 bg-brand-50 hover:bg-brand-600 text-brand-600 hover:text-white text-xs font-bold rounded-xl transition flex items-center gap-1">
-                            풀기 <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterCategory(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-brand-600', 'text-white');
-                btn.classList.add('bg-slate-100', 'text-slate-600');
-            });
-            event.target.classList.add('active', 'bg-brand-600', 'text-white');
-            event.target.classList.remove('bg-slate-100', 'text-slate-600');
-
-            if (cat === 'all') renderCertCards(CERT_DATA);
-            else renderCertCards(CERT_DATA.filter(c => c.category === cat));
-        }
-
-        function searchCerts() {
-            const query = document.getElementById('cert-search-input').value.toLowerCase().trim();
-            const filtered = CERT_DATA.filter(c => c.title.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query));
-            renderCertCards(filtered);
-        }
-
-        function selectCertAndStart(certId) {
-            const cert = CERT_DATA.find(c => c.id === certId);
-            if (cert) {
-                state.selectedCert = cert;
-                updateCertDisplay();
-                switchTab('study');
-                startCbtExam();
-            }
-        }
-
-        function updateCertDisplay() {
-            document.getElementById('active-cert-display').innerText = state.selectedCert.title;
-            document.getElementById('cbt-cert-title').innerText = `${state.selectedCert.title} 모의고사`;
+            // Shuffle the complete 60 questions order so no two exams look the same!
+            return shuffleArray(fullQuestions);
         }
 
         function startCbtExam() {
             const certId = state.selectedCert.id;
-            const dataset = QUESTION_DATABASE[certId] || QUESTION_DATABASE['craftsman-automation'];
             
-            state.cbtExam.questions = dataset;
+            // Generate 60 dynamically shuffled & randomized questions
+            state.cbtExam.questions = generate60ExamQuestions(certId);
             state.cbtExam.userAnswers = {};
             state.cbtExam.starred = {};
             state.cbtExam.currentIndex = 0;
-            state.cbtExam.timerSeconds = 1800;
+            state.cbtExam.timerSeconds = 3600; // 60 minutes for 60 questions
 
             clearInterval(state.cbtExam.timerInterval);
             startTimer();
             renderCbtQuestion();
             renderOmrGrid();
+
+            showToast(`🎲 ${state.selectedCert.title} 60문항이 무작위 배치되었습니다. 시험을 시작합니다!`);
         }
 
         function startTimer() {
@@ -1051,7 +740,7 @@
             state.cbtExam.timerInterval = setInterval(() => {
                 if (state.cbtExam.timerSeconds <= 0) {
                     clearInterval(state.cbtExam.timerInterval);
-                    showToast('시험 시간이 종료되었습니다! 자동 제출합니다.');
+                    showToast('60분 시험 시간이 종료되었습니다! 답안을 자동 제출합니다.');
                     submitExam();
                     return;
                 }
@@ -1379,6 +1068,149 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand-600', 'bg-brand-50');
+                btn.classList.add('text-slate-600');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-brand-600', 'bg-brand-50');
+                activeNav.classList.remove('text-slate-600');
+            }
+
+            if (tabId === 'summary') renderSummaryTabs();
+            if (tabId === 'wrong') renderWrongTab();
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white');
+            event.target.classList.remove('bg-slate-100', 'text-slate-600');
+            renderCerts(cat);
+        }
+
+        function searchCerts() {
+            const query = document.getElementById('cert-search-input').value.toLowerCase();
+            renderCerts('all', query);
+        }
+
+        function renderCerts(filter = 'all', query = '') {
+            const container = document.getElementById('cert-grid');
+            if (!container) return;
+
+            let filtered = CERT_DATA;
+            if (filter !== 'all') {
+                filtered = filtered.filter(c => c.category === filter);
+            }
+            if (query) {
+                filtered = filtered.filter(c => c.title.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query));
+            }
+
+            container.innerHTML = filtered.map(c => `
+                <div onclick="selectCert('${c.id}')" class="bg-white rounded-2xl p-5 border ${state.selectedCert?.id === c.id ? 'border-brand-500 ring-2 ring-brand-500/20' : 'border-slate-200'} hover:border-brand-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">${c.level}</span>
+                            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr ${c.color} text-white flex items-center justify-center text-sm shadow-sm">
+                                <i class="fa-solid ${c.icon}"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-800">${c.title}</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">${c.desc}</p>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-400"><i class="fa-solid fa-list-check mr-1"></i>${c.questionsCount}문항</span>
+                        <span class="text-brand-600 font-bold hover:underline">CBT 시작 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('cert-total-count').innerText = `총 ${filtered.length}개 기능사 제공 중`;
+        }
+
+        function selectCert(certId) {
+            const cert = CERT_DATA.find(c => c.id === certId);
+            if (cert) {
+                state.selectedCert = cert;
+                document.getElementById('active-cert-display').innerText = cert.title;
+                document.getElementById('cbt-cert-title').innerText = `${cert.title} 필기 모의고사`;
+                renderCerts();
+                showToast(`[${cert.title}] 종목이 선택되었습니다.`);
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('input-school').value = state.studentProfile.school || '';
+            document.getElementById('input-student-id').value = state.studentProfile.studentId || '';
+            document.getElementById('input-student-name').value = state.studentProfile.name !== '게스트' ? state.studentProfile.name : '';
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function saveStudentProfile() {
+            const school = document.getElementById('input-school').value.trim();
+            const studentId = document.getElementById('input-student-id').value.trim();
+            const name = document.getElementById('input-student-name').value.trim();
+
+            if (!name) {
+                showToast('학생 이름을 입력해 주세요.');
+                return;
+            }
+
+            state.studentProfile = { school, studentId, name };
+            localStorage.setItem('pm_student_profile', JSON.stringify(state.studentProfile));
+            updateStudentUI();
+            syncWrongNotesToFirestore();
+            closeLoginModal();
+            showToast(`${name} 학생 정보가 저장되었습니다.`);
+        }
+
+        function updateStudentUI() {
+            const p = state.studentProfile;
+            const nameText = p.name || '게스트';
+            document.getElementById('header-student-name').innerText = nameText;
+            document.getElementById('hero-student-text').innerText = p.studentId ? `${p.studentId} ${nameText}` : nameText;
+            document.getElementById('stat-student-name').innerText = p.school ? `${p.school} ${nameText}` : nameText;
+        }
+
+        window.switchTab = switchTab;
+        window.filterCategory = filterCategory;
+        window.searchCerts = searchCerts;
+        window.selectCert = selectCert;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.saveStudentProfile = saveStudentProfile;
+        window.startCbtExam = () => { switchTab('study'); startCbtExam(); };
+        window.prevQuestion = prevQuestion;
+        window.nextQuestion = nextQuestion;
+        window.selectAnswer = selectAnswer;
+        window.toggleStar = toggleStar;
+        window.jumpToQuestion = jumpToQuestion;
+        window.submitExam = submitExam;
+        window.closeResultModal = closeResultModal;
+        window.renderSummaryContent = renderSummaryContent;
+        window.removeWrongNote = removeWrongNote;
+        window.clearWrongNotes = clearWrongNotes;
+
+        // Application Initialization
+        window.onload = function() {
+            state.selectedCert = CERT_DATA[0];
+            updateStudentUI();
+            loadWrongNotesLocal();
+            renderCerts();
+        };
     </script>
 </body>
 </html>
