@@ -230,22 +230,15 @@
                     <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
                         <i class="fa-regular fa-clock text-amber-400"></i>
                         <span class="text-xs text-slate-400">남은 시간:</span>
-                        <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">30:00</span>
+                        <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">60:00</span>
                     </div>
                     <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
-                            <i class="fa-regular fa-clock text-amber-400"></i>
-                            <span class="text-xs text-slate-400">남은 시간:</span>
-                            <span id="cbt-timer" class="font-mono text-base font-bold text-amber-400">60:00</span>
-                        </div>
-                        <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
-                            <i class="fa-solid fa-paper-plane"></i> 답안 제출하기
-                        </button>
-                    </div>
+                        <i class="fa-solid fa-paper-plane"></i> 답안 제출하기
+                    </button>
                 </div>
+            </div>
 
-                <!-- Exam Container -->
+            <!-- Exam Container -->
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     <!-- Question View (Left 3 cols) -->
                     <div class="lg:col-span-3 space-y-6">
@@ -407,51 +400,58 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration & Initialization
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gonggo-cbt-app';
         let db = null;
-        let auth = null;
         let currentUser = null;
 
         const state = {
-            selectedCert: null, // Initialized below
-            studentProfile: JSON.parse(localStorage.getItem('pm_student_profile') || '{"school":"","studentId":"","name":"게스트"}'),
-            wrongNotes: JSON.parse(localStorage.getItem('pm_wrong_notes') || '[]'),
+            selectedCert: null,
+            studentProfile: {
+                school: '',
+                studentId: '',
+                name: '게스트'
+            },
+            wrongNotes: [],
             cbtExam: {
                 questions: [],
-                currentIndex: 0,
                 userAnswers: {},
                 starred: {},
+                currentIndex: 0,
                 timerSeconds: 3600,
                 timerInterval: null
             }
         };
 
-        if (typeof __firebase_config !== 'undefined') {
-            try {
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-
-                const initAuth = async () => {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                };
-                initAuth().catch(err => console.log("Firebase Auth optional fallback", err));
-
-                onAuthStateChanged(auth, (user) => {
-                    currentUser = user;
-                    if (user) {
-                        syncWrongNotesFromFirestore();
-                    }
-                });
-            } catch (e) {
-                console.log("Firestore setup notice: running in local mode");
+        function startCbtExam(certId) {
+            if (certId) {
+                const cert = CERT_DATA.find(c => c.id === certId);
+                if (cert) state.selectedCert = cert;
             }
+            if (!state.selectedCert) {
+                state.selectedCert = CERT_DATA[0];
+            }
+
+            // Update UI headers
+            const activeCertDisplay = document.getElementById('active-cert-display');
+            const cbtCertTitle = document.getElementById('cbt-cert-title');
+            if (activeCertDisplay) activeCertDisplay.innerText = state.selectedCert.title;
+            if (cbtCertTitle) cbtCertTitle.innerText = `${state.selectedCert.title} 필기 모의고사`;
+
+            // Generate 60 dynamically shuffled & randomized questions
+            state.cbtExam.questions = generate60ExamQuestions(state.selectedCert.id);
+            state.cbtExam.userAnswers = {};
+            state.cbtExam.starred = {};
+            state.cbtExam.currentIndex = 0;
+            state.cbtExam.timerSeconds = 3600; // 60 minutes for 60 questions
+
+            clearInterval(state.cbtExam.timerInterval);
+            startTimer();
+            renderCbtQuestion();
+            renderOmrGrid();
+
+            // Switch to study tab
+            switchTab('study', false);
+
+            showToast(`🎲 [${state.selectedCert.title}] 60문항 CBT 모의고사가 시작되었습니다.`);
         }
 
         async function syncWrongNotesToFirestore() {
@@ -715,24 +715,6 @@
 
             // Shuffle the complete 60 questions order so no two exams look the same!
             return shuffleArray(fullQuestions);
-        }
-
-        function startCbtExam() {
-            const certId = state.selectedCert.id;
-            
-            // Generate 60 dynamically shuffled & randomized questions
-            state.cbtExam.questions = generate60ExamQuestions(certId);
-            state.cbtExam.userAnswers = {};
-            state.cbtExam.starred = {};
-            state.cbtExam.currentIndex = 0;
-            state.cbtExam.timerSeconds = 3600; // 60 minutes for 60 questions
-
-            clearInterval(state.cbtExam.timerInterval);
-            startTimer();
-            renderCbtQuestion();
-            renderOmrGrid();
-
-            showToast(`🎲 ${state.selectedCert.title} 60문항이 무작위 배치되었습니다. 시험을 시작합니다!`);
         }
 
         function startTimer() {
@@ -1057,6 +1039,13 @@
 
         function showToast(msg) {
             const container = document.getElementById('toast-container');
+            if (!container) return;
+            
+            // Limit maximum visible toasts to 2 to avoid clutter
+            while (container.children.length >= 2) {
+                container.firstElementChild.remove();
+            }
+
             const toast = document.createElement('div');
             toast.className = 'bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto';
             toast.innerHTML = `<i class="fa-solid fa-circle-info text-brand-400"></i> ${msg}`;
@@ -1069,7 +1058,7 @@
             }, 3000);
         }
 
-        function switchTab(tabId) {
+        function switchTab(tabId, checkExam = true) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             const target = document.getElementById(`tab-${tabId}`);
             if (target) target.classList.remove('hidden');
@@ -1082,6 +1071,13 @@
             if (activeNav) {
                 activeNav.classList.add('text-brand-600', 'bg-brand-50');
                 activeNav.classList.remove('text-slate-600');
+            }
+
+            // Auto-start CBT if entering study tab with empty questions
+            if (tabId === 'study' && checkExam) {
+                if (!state.cbtExam.questions || state.cbtExam.questions.length === 0) {
+                    startCbtExam();
+                }
             }
 
             if (tabId === 'summary') renderSummaryTabs();
@@ -1116,7 +1112,7 @@
             }
 
             container.innerHTML = filtered.map(c => `
-                <div onclick="selectCert('${c.id}')" class="bg-white rounded-2xl p-5 border ${state.selectedCert?.id === c.id ? 'border-brand-500 ring-2 ring-brand-500/20' : 'border-slate-200'} hover:border-brand-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between space-y-4">
+                <div onclick="startCbtExam('${c.id}')" class="bg-white rounded-2xl p-5 border ${state.selectedCert?.id === c.id ? 'border-brand-500 ring-2 ring-brand-500/20' : 'border-slate-200'} hover:border-brand-500 hover:shadow-md cursor-pointer transition flex flex-col justify-between space-y-4">
                     <div class="space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">${c.level}</span>
@@ -1144,7 +1140,6 @@
                 document.getElementById('active-cert-display').innerText = cert.title;
                 document.getElementById('cbt-cert-title').innerText = `${cert.title} 필기 모의고사`;
                 renderCerts();
-                showToast(`[${cert.title}] 종목이 선택되었습니다.`);
             }
         }
 
@@ -1192,7 +1187,7 @@
         window.openLoginModal = openLoginModal;
         window.closeLoginModal = closeLoginModal;
         window.saveStudentProfile = saveStudentProfile;
-        window.startCbtExam = () => { switchTab('study'); startCbtExam(); };
+        window.startCbtExam = startCbtExam;
         window.prevQuestion = prevQuestion;
         window.nextQuestion = nextQuestion;
         window.selectAnswer = selectAnswer;
